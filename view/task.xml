@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+      <record model="ir.ui.view" id="project_task_projectref_view_form">
+         <field name="name">project.task.form</field>
+         <field name="model">project.task</field>
+         <field name="inherit_id" ref="project.view_task_form2"></field>
+         <field name="arch" type="xml">
+             
+            <xpath expr="/form/sheet/group/group[1]/field[@name='project_id']" position="after">
+                <field name="project_ref_id">Project reference</field>
+            </xpath>
+             
+            <xpath expr="field[@name='sale_line_id']" position="after">
+                <field name="price">Price</field>
+            </xpath>
+             
+            <xpath expr="field[@name='sale_line_id']" position="after">
+                <field name="cost">Cost</field>
+            </xpath>
+             
+            <xpath expr="field[@name='sale_line_id']" position="attributes">
+                <attribute name="context">{'sale_order.project_id': project_id}</attribute>
+            </xpath>
+             
+        </field>
+      </record>
+   </data>
+</openerp>
