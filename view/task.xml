@@ -2,28 +2,51 @@
 <openerp>
    <data>
       <record model="ir.ui.view" id="project_task_projectref_view_form">
-         <field name="name">project.task.form</field>
+         <field name="name">project.task.project_ref.form</field>
          <field name="model">project.task</field>
+         <field name="priority">20</field>
          <field name="inherit_id" ref="project.view_task_form2"></field>
          <field name="arch" type="xml">
              
-            <xpath expr="/form/sheet/group/group[1]/field[@name='project_id']" position="after">
+            <field name="reviewer_id" position="after">
+                <field name="points"/>
+            </field>
+             
+            <field name="project_id" position="after">
                 <field name="project_ref_id">Project reference</field>
-            </xpath>
+            </field>
              
-            <xpath expr="field[@name='sale_line_id']" position="after">
+            <field name="sale_line_id" position="after">
                 <field name="price">Price</field>
-            </xpath>
+            </field>
              
-            <xpath expr="field[@name='sale_line_id']" position="after">
-                <field name="cost">Cost</field>
-            </xpath>
+            <field name="sale_line_id" position="after">
+                <field name="cost">Cost</field> 
+            </field>
              
-            <xpath expr="field[@name='sale_line_id']" position="attributes">
-                <attribute name="context">{'sale_order.project_id': project_id}</attribute>
-            </xpath>
+             <field name="sale_line_id" position="after">
+                <field name="effective_cost">Effective Cost</field> 
+            </field>
              
+            <field name="company_id" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </field>
+
+            <field name="company_id" position="after">
+                    <field name="an_acc_by_prj" invisible="True"></field>
+                    <field name="an_acc_by_prj_ref" invisible="True" ></field>
+            </field>
+             
+            <field name="sale_line_id" position="attributes">
+                <attribute name="options">{'no_quick_create':True,'no_create_edit':True}</attribute>    
+                
+                <attribute name="domain">['&amp;', ('order_id.project_id', '!=', False), '|',
+                    ('order_id.project_id', '=', an_acc_by_prj_ref), ('order_id.project_id', '=', an_acc_by_prj)]</attribute>
+                
+            </field>
+
         </field>
       </record>
+
    </data>
 </openerp>

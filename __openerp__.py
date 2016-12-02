@@ -19,12 +19,14 @@
     'version': '0.2',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project', 'sale'],
+    'depends': ['base', 'project', 'sale', 'sale_service'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'view/task.xml',
+        'view/order.xml',
+        'view/account.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
