@@ -33,14 +33,18 @@ class Order(models.Model):
 
     _inherit = 'sale.order'
     
-    @api.model
-    def _default_internal_sale_offer_markup(self):
-        self._cr.execute("select value from ir_config_parameter where key = 'internal_sale_offer_markup'")
-        r = self._cr.fetchone()
-        return float(r[0]) if r else 0
-    
-    project_markup = fields.Float(default=_default_internal_sale_offer_markup, readonly=True)
+    sale_offer_markup = fields.Float(related='project_id.sale_offer_markup', readonly=True)
+   
     real_project_id = fields.Many2one('project.project', string="Project", related="project_id.project_id", readonly=True)
+    
+    unrelated_task_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_unrelated_task_ids")
+    
+    @api.one
+    def compute_unrelated_task_ids(self):
+        
+        unrelated_recordset = self.env["project.task"].search([
+            ("sale_line_id", "=", False), ("project_id", "=", self.real_project_id.id)])
+        self.unrelated_task_ids = unrelated_recordset
     
     @api.multi
     def calculate_project_costs(self):
@@ -54,7 +58,7 @@ class Order(models.Model):
                 
             if(line_cost>0):
                 l.purchase_price = line_cost
-                l.price_unit = line_cost * self.project_markup
+                l.price_unit = line_cost * self.sale_offer_markup
             
 
         

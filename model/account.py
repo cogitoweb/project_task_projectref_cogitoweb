@@ -8,5 +8,13 @@ class AccountAnalyticAccount(models.Model):
         self._cr.execute("select value from ir_config_parameter where key = 'internal_point_unit_price'")
         r = self._cr.fetchone()
         return float(r[0]) if r else 0
+    
+    @api.model
+    def _default_internal_sale_offer_markup(self):
+        self._cr.execute("select value from ir_config_parameter where key = 'internal_sale_offer_markup'")
+        r = self._cr.fetchone()
+        return float(r[0]) if r else 0
+    
+    sale_offer_markup = fields.Float(default=_default_internal_sale_offer_markup)
 
     point_unit_price = fields.Float(default=_default_internal_point_unit_price)
