@@ -19,7 +19,7 @@ class OrderLine(models.Model):
     @api.one
     def compute_tasks_ids(self):
         
-        related_recordset = self.env["project.task"].search([("sale_line_id", "=", self.id)])
+        related_recordset = self.env["project.task"].sudo().search([("sale_line_id", "=", self.id)])
         self.tasks_ids = related_recordset
         self.tasks_count = len(related_recordset)
         
@@ -42,7 +42,7 @@ class Order(models.Model):
     @api.one
     def compute_unrelated_task_ids(self):
         
-        unrelated_recordset = self.env["project.task"].search([
+        unrelated_recordset = self.env["project.task"].sudo().search([
             ("sale_line_id", "=", False), ("project_id", "=", self.real_project_id.id)])
         self.unrelated_task_ids = unrelated_recordset
     
