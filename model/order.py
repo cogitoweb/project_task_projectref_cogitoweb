@@ -27,7 +27,7 @@ class OrderLine(models.Model):
     def compute_tasks_prices(self):
         
         for t in self.tasks_ids:
-            t.compute_price()
+            t.sudo().compute_price()
 
 class Order(models.Model):
 
