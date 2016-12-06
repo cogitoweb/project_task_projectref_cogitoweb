@@ -53,7 +53,7 @@ class Order(models.Model):
             line_cost = 0
         
             for t in l.tasks_ids:
-                t.compute_price()
+                t.sudo().compute_price()
                 line_cost = t.cost + line_cost
                 
             if(line_cost>0):
