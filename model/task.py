@@ -31,7 +31,7 @@ class Task(models.Model):
     @api.depends('sale_line_id.price_unit', 'points')
     def compute_price(self):
         
-        for t in self:
+        for t in self.sudo():
             
             #
             ## based on points
