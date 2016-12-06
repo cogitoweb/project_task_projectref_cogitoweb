@@ -26,8 +26,8 @@ class OrderLine(models.Model):
     @api.onchange('price_unit')
     def compute_tasks_prices(self):
         
-        for t in self.tasks_ids:
-            t.sudo().compute_price()
+        for t in self.sudo().tasks_ids:
+            t.compute_price()
 
 class Order(models.Model):
 
@@ -52,8 +52,8 @@ class Order(models.Model):
         for l in self.order_line:
             line_cost = 0
         
-            for t in l.tasks_ids:
-                t.sudo().compute_price()
+            for t in l.sudo().tasks_ids:
+                t.compute_price()
                 line_cost = t.cost + line_cost
                 
             if(line_cost>0):
