@@ -34,7 +34,7 @@ class Order(models.Model):
     _inherit = 'sale.order'
     
     sale_offer_markup = fields.Float(related='project_id.sale_offer_markup', readonly=True)
-   
+
     real_project_id = fields.Many2one('project.project', string="Project", related="project_id.project_id", readonly=True)
     
     unrelated_task_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_unrelated_task_ids")
@@ -43,7 +43,7 @@ class Order(models.Model):
     def compute_unrelated_task_ids(self):
         
         unrelated_recordset = self.env["project.task"].sudo().search([
-            ("sale_line_id", "=", False), ("project_id", "=", self.real_project_id.id)])
+            ("sale_line_id", "=", False), '|', ("project_id", "=", self.real_project_id.id), ("project_ref_id", "=", self.real_project_id.id)])
         self.unrelated_task_ids = unrelated_recordset
     
     @api.multi

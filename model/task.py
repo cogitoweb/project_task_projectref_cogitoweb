@@ -28,7 +28,7 @@ class Task(models.Model):
             t.cost = cost 
 
             
-    @api.depends('sale_line_id.price_unit', 'points')
+    @api.depends('sale_line_id', 'sale_line_id.price_unit', 'points')
     def compute_price(self):
         
         for t in self:
