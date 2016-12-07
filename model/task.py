@@ -17,8 +17,8 @@ class Task(models.Model):
         
         # ricava il costo orario dal contratto
         for t in self:
-            resource = self.env['resource.resource'].search([('user_id','=',t.user_id.id)])
-            employee = self.env['hr.employee'].search([('resource_id','=',resource.id)])
+            resource = self.env['resource.resource'].sudo().search([('user_id','=',t.user_id.id)])
+            employee = self.env['hr.employee'].sudo().search([('resource_id','=',resource.id)])
             cost = 0
 
             if(resource and employee and employee.contract_id):
