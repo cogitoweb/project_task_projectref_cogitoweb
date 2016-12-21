@@ -42,10 +42,12 @@ class Task(models.Model):
             ## base on sale offer
             #
             else:
-                row_price = t.sale_line_id.price_unit * t.sale_line_id.product_uom_qty if t.sale_line_id else 0
+                row_price = 0
                 price = 0
 
                 if(t.sale_line_id.id):
+                    
+                    row_price = t.sale_line_id.price_unit * t.sale_line_id.product_uom_qty
                     self._cr.execute("select sum(cost) from project_task where sale_line_id = %s and stage_id <> 8" %
                                             str(t.sale_line_id.id))
                     r = self._cr.fetchone()

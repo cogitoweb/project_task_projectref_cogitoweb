@@ -55,10 +55,9 @@ class Order(models.Model):
             for t in l.sudo().tasks_ids:
                 t.compute_price()
                 line_cost = t.cost + line_cost
-                
-            if(line_cost>0):
-                l.purchase_price = line_cost
-                l.price_unit = line_cost * self.sale_offer_markup
+
+            l.purchase_price = line_cost
+            l.price_unit = line_cost * self.sale_offer_markup
             
 
         
