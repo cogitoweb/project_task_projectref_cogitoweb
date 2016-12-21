@@ -13,7 +13,7 @@
             <field name="arch" type="xml">
                 
                 <xpath expr="//header/field[@name='state']" position="before">
-                    <button string="Calculate Prices" type="object" name="calculate_project_costs" states="draft"
+                    <button string="Calculate Prices" type="object" name="calculate_project_costs" states="draft,sent"
                             class="oe_highlight" confirm="Recalculation of prices will lead to a reset of all values to the cost multiplied by the markup. Do you want to proceed?"/>
                 </xpath>
                 
