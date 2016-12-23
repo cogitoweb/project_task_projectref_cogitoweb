@@ -45,7 +45,7 @@ class Task(models.Model):
                 row_price = 0
                 price = 0
 
-                if(t.sale_line_id.id):
+                if(t.sudo().sale_line_id.id):
                     
                     row_price = t.sale_line_id.price_unit * t.sale_line_id.product_uom_qty
                     self._cr.execute("select sum(cost) from project_task where sale_line_id = %s and stage_id <> 8" %
@@ -81,7 +81,7 @@ class Task(models.Model):
     
     def _get_sale_order_line(self, cr, uid, sale_line_id, context=None):
         sale_order_line = self.pool.get('sale.order.line')
-        sos = sale_order_line.browse(cr, uid, [sale_line_id], context=context)
+        sos = sale_order_line.sudo().browse(cr, uid, [sale_line_id], context=context)
         so = sos and sos[0] or False
         return so
     
