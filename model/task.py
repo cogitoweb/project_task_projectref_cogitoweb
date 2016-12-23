@@ -71,9 +71,9 @@ class Task(models.Model):
     an_acc_by_prj_ref = fields.Many2one('account.analytic.account', string="Contract/Analytic reference",
                                                          related='project_ref_id.analytic_account_id',readonly=True)
     
-    price = fields.Float(required=True, default=0, readonly=True, compute=compute_price, store=True)
+    price = fields.Float(required=True, default=0, readonly=True, compute=compute_price, store=True, compute_sudo=True)
     
-    cost = fields.Float(required=True, default=0, readonly=True, compute=compute_cost, store=True)
+    cost = fields.Float(required=True, default=0, readonly=True, compute=compute_cost, store=True, compute_sudo=True)
     
     effective_cost = fields.Float(required=True, default=0, readonly=True, store=True)
     
