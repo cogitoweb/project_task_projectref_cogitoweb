@@ -81,7 +81,7 @@ class Task(models.Model):
     
     def _get_sale_order_line(self, cr, uid, sale_line_id, context=None):
         sale_order_line = self.pool.get('sale.order.line')
-        sos = sale_order_line.sudo().browse(cr, uid, [sale_line_id], context=context)
+        sos = sale_order_line.browse(cr, uid, [sale_line_id], context=context)
         so = sos and sos[0] or False
         return so
     
