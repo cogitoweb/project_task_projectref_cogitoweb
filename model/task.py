@@ -27,6 +27,15 @@ class Task(models.Model):
 
             t.cost = cost 
 
+    @api.depends('date_deadline')
+    def compute_default_date_end(self):
+
+        if not self.date_end or (self.date_end[:10] == self.date_deadline):
+            
+            # set hour at the end of the day but not too close to midnight
+            outdate = self.date_deadline + ' 19:00:00' if self.date_deadline else False     
+            self.date_end = outdate
+
             
     @api.depends('sale_line_id', 'sale_line_id.price_unit', 'points')
     def compute_price(self):
