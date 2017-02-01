@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api, exceptions, tools
+from dateutil import parser
+from datetime import datetime, timedelta
 
 import pprint
 #Import logger
@@ -125,9 +127,26 @@ class Task(models.Model):
     # and date gant copy on date_ends
     def onchange_date_deadline(
             self, cr, uid, ids, date_end, date_deadline, context=None):
-        if not date_end or (date_end[:10] == self.browse(
-                cr, uid, ids, context=context).date_deadline):
+        
+        if not date_end or (date_end[:10] == self.browse(cr, uid, ids, context=context).date_deadline):
             
             # set hour at the end of the day but not too close to midnight
-            outdate = date_deadline + ' 19:00:00' if date_deadline else False     
-            return {'value': {'date_end': outdate}}
+            date_end = date_deadline + ' 19:00:00' if date_deadline else False   
+            
+        # retrieve possible date start from db
+        date_start = self.browse(cr, uid, ids, context=context).date_start
+        
+        # if date_end is set
+        # and date start is not set so that odoo fills the field with now
+        # or the db value is > than date_end
+        if(date_end and ((not date_start and parser.parse(date_end) < datetime.now()) 
+                            or (date_start and parser.parse(date_start) > parser.parse(date_end)))):
+            date_start = parser.parse(date_end) - timedelta(hours=1)
+            
+        # conditional output
+        out = {'date_end': date_end}
+        
+        if(date_start):
+            out['date_start'] = date_start
+        
+        return {'value': out}
