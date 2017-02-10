@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+            
+    <record id="project.view_project_form_translate_tasks" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project_issue.view_project_form_inherited" />
+        
+        <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_support'), ref('enhanced_helpdesk.ticketing_external_user') ])]" />
+
+        <field name="arch" type="xml">
+
+            <field name="alias_name" position="before">
+                <button string="Translate Tasks" name="%(action_wizard_translate_tasks)d"  type="action" context="{'project_id': id}"/>
+            </field>
+            
+        </field>
+    </record>
+
+   </data>
+</openerp>
