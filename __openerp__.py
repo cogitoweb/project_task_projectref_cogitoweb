@@ -24,6 +24,9 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'wizard/translate_tasks.xml',
+
+        'view/project.xml',
         'view/task.xml',
         'view/order.xml',
         'view/account.xml',
