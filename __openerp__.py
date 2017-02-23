@@ -28,6 +28,7 @@
 
         'view/project.xml',
         'view/task.xml',
+        'view/budget_line.xml',
         'view/order.xml',
         'view/account.xml',
     ],

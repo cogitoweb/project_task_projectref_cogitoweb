@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_crossovered_budget_line_form">
+            <field name="name">sale order crossovered.budget.line.form</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_form"></field>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='analytic_account_id']" position="replace"> </xpath>
+                <xpath expr="//field[@name='date_from']" position="replace"> </xpath>
+                <xpath expr="//field[@name='date_to']" position="replace"> </xpath>
+                
+                <xpath expr="//field[@name='practical_amount']" position="replace"> </xpath>
+                <xpath expr="//field[@name='theoritical_amount']" position="replace"> </xpath>
+                <xpath expr="//field[@name='percentage']" position="replace"> </xpath>
+                <xpath expr="//field[@name='company_id']" position="replace"> </xpath>
+                
+                <xpath expr="//field[@name='paid_date']" position="before">
+                    <field name="invoice_date"/>
+                </xpath>
+                
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="invoice_budget_view_tree">
+            <field name="name">invoice.budget.view.tree</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="context">{'search_default_sale_order_state_filter': 1}</field>
+            <field name="arch" type="xml">
+
+                <tree string="Budget lines to invoice" default_order="invoice_date asc">
+                    <field name="invoice_date"/>
+                    <field name="paid_date"/>
+                    <field name="planned_amount" sum="Total"/>
+                    <field name="sale_order_state" />
+                    <button string="Invoice" name="invoice" type="object"
+                            attrs="{'invisible':['!', ('sale_order_state','in',['manual']), ('invoiced', '=', False)]}"></button>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_invoice_budget_search" model="ir.ui.view">
+           <field name="name">invoice.budget.search</field>
+           <field name="model">crossovered.budget.lines</field>
+           <field name="arch" type="xml">
+               <search string="Budget lines to invoice">
+                    <field name="invoice_date"/>
+                    <field name="paid_date"/>
+                    <field name="sale_order_state"/>
+                    <filter name="sale_order_state_filter" string="Ready to Invoice" 
+                            domain="[('sale_order_state','in',['manual'])]" />
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_budget_lines_to_invoice_view">
+            <field name="name">Budgets lines to invoice</field>
+            <field name="res_model">crossovered.budget.lines</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="invoice_budget_view_tree"/>
+            <field name="search_view_id" ref="view_invoice_budget_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new budget.
+              </p><p>
+                Here you can invoice budget lines related to orders
+              </p>
+            </field>
+        </record>
+        
+        <menuitem id="budget_lines_to_invoice" name="Budgets lines to invoice" parent="account_budget.next_id_31" sequence="10"
+                  action="act_budget_lines_to_invoice_view" />
+
+    </data>
+</openerp>
