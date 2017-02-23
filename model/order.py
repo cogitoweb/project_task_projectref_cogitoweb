@@ -39,6 +39,8 @@ class Order(models.Model):
     
     unrelated_task_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_unrelated_task_ids")
     
+    budget_line_ids = fields.One2many('crossovered.budget.lines', 'sale_order_id', string="Budget Lines")
+
     @api.one
     def compute_unrelated_task_ids(self):
         
@@ -60,4 +62,3 @@ class Order(models.Model):
             l.price_unit = line_cost * self.sale_offer_markup
             
 
-        
