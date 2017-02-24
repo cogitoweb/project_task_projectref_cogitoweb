@@ -22,7 +22,8 @@
                 </xpath>
                 
                 <xpath expr="//field[@name='planned_amount']" position="after">
-                    <field name="invoiced" />
+                    <field name="sale_order_id" attrs="{'readonly': True, 'invisible': [('sale_order_id', '=', False)]}" />
+                    <field name="invoiced" attrs="{'invisible': [('sale_order_id', '=', False)]}" />
                 </xpath>
 
             </field>
@@ -34,6 +35,8 @@
             <field name="arch" type="xml">
 
                 <tree string="Budget lines to invoice" default_order="invoice_date asc">
+                    <field name="partner_id" />
+                    <field name="analytic_account_name" />
                     <field name="invoice_date"/>
                     <field name="paid_date"/>
                     <field name="planned_amount" sum="Total"/>
@@ -52,6 +55,8 @@
            <field name="model">crossovered.budget.lines</field>
            <field name="arch" type="xml">
                <search string="Budget lines to invoice">
+                    <field name="partner_id" />
+                    <field name="analytic_account_id" />
                     <field name="invoice_date"/>
                     <field name="paid_date"/>
                     <field name="sale_order_state"/>

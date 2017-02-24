@@ -13,6 +13,8 @@ class BudgetLine(models.Model):
 
     _inherit = 'crossovered.budget.lines'
     
+    cache = {}
+    
     def _default_budget(self):
         
         objs = self.env['crossovered.budget'].sudo().search([['date_from', '<=', fields.Date.today()], 
@@ -29,6 +31,20 @@ class BudgetLine(models.Model):
             return objs[0]
         
         return False
+    
+    def _default_invoice_date_cache(self):
+        
+        if('budget_line_cache_invoice_date' in self.cache):
+            return self.cache['budget_line_cache_invoice_date']
+            
+        return False
+    
+    def _default_planned_amount_cache(self):
+        
+        if('budget_line_cache_planned_amount' in self.cache):
+            return self.cache['budget_line_cache_planned_amount']
+            
+        return False
         
     # inherited
     crossovered_budget_id = fields.Many2one(default=_default_budget)
@@ -37,12 +53,20 @@ class BudgetLine(models.Model):
     # added
     sale_order_id = fields.Many2one('sale.order', string="Sale Order")
     sale_order_state = fields.Selection(related='sale_order_id.state')
+    analytic_account_name = fields.Char(related='analytic_account_id.name')
+    partner_id = fields.Many2one(related='analytic_account_id.partner_id')
     invoiced = fields.Boolean(defaut=False)
-    invoice_date = fields.Date()
+    invoice_date = fields.Date(default=_default_invoice_date_cache)
+    planned_amount = fields.Float(default=_default_planned_amount_cache)
     
     @api.onchange('invoice_date')
     def onchange_invoice_date(self):
         self.paid_date = self.invoice_date
+        self.cache['budget_line_cache_invoice_date'] = self.invoice_date
+        
+    @api.onchange('planned_amount')
+    def onchange_planned_amount(self):
+        self.cache['budget_line_cache_planned_amount'] = self.planned_amount
     
     @api.multi
     def markinvoiced(self):
@@ -88,7 +112,7 @@ class BudgetLine(models.Model):
 
             else:
                 raise Warning(_("Current order is not related to any analytic account. Please provide one before inserting budget lines"))
-
+        
         res = super(BudgetLine,self).create(values)
 
         return res
