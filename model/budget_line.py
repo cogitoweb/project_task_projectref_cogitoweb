@@ -40,6 +40,16 @@ class BudgetLine(models.Model):
     invoiced = fields.Boolean(defaut=False)
     invoice_date = fields.Date()
     
+    @api.onchange('invoice_date')
+    def onchange_invoice_date(self):
+        self.paid_date = self.invoice_date
+    
+    @api.multi
+    def markinvoiced(self):
+        
+        self.ensure_one()  
+        self.invoiced = True
+    
     @api.multi
     def invoice(self):
         

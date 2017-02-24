@@ -18,16 +18,19 @@
                 <xpath expr="//field[@name='company_id']" position="replace"> </xpath>
                 
                 <xpath expr="//field[@name='paid_date']" position="before">
-                    <field name="invoice_date"/>
+                    <field name="invoice_date" attrs="{'required':True}"/>
                 </xpath>
                 
+                <xpath expr="//field[@name='planned_amount']" position="after">
+                    <field name="invoiced" />
+                </xpath>
+
             </field>
         </record>
         
         <record model="ir.ui.view" id="invoice_budget_view_tree">
             <field name="name">invoice.budget.view.tree</field>
             <field name="model">crossovered.budget.lines</field>
-            <field name="context">{'search_default_sale_order_state_filter': 1}</field>
             <field name="arch" type="xml">
 
                 <tree string="Budget lines to invoice" default_order="invoice_date asc">
@@ -35,8 +38,11 @@
                     <field name="paid_date"/>
                     <field name="planned_amount" sum="Total"/>
                     <field name="sale_order_state" />
-                    <button string="Invoice" name="invoice" type="object"
-                            attrs="{'invisible':['!', ('sale_order_state','in',['manual']), ('invoiced', '=', False)]}"></button>
+                    <field name="invoiced" attrs="{'invisible': True}" />
+                    <button string="Mark as Invoiced" name="markinvoiced" type="object"
+                            attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}"></button>
+                    <button string="Create Invoice" name="invoice" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}"></button>
                 </tree>
             </field>
         </record>
@@ -50,7 +56,7 @@
                     <field name="paid_date"/>
                     <field name="sale_order_state"/>
                     <filter name="sale_order_state_filter" string="Ready to Invoice" 
-                            domain="[('sale_order_state','in',['manual'])]" />
+                            domain="[('sale_order_state','in',['manual']), ('invoiced', '=', False)]" />
                 </search>
             </field>
         </record>
@@ -62,11 +68,13 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="invoice_budget_view_tree"/>
             <field name="search_view_id" ref="view_invoice_budget_search"/>
+            <field name="context">{'search_default_sale_order_state_filter': 1}</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
                 Click to create a new budget.
               </p><p>
-                Here you can invoice budget lines related to orders
+                Here you can invoice budget lines related to orders.
+                If you don't see anly row, please, create a budget line on a Sale Order.
               </p>
             </field>
         </record>
