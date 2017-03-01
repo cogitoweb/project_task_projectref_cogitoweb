@@ -43,10 +43,12 @@ class Order(models.Model):
 
     @api.one
     def compute_unrelated_task_ids(self):
+
+        if(self.real_project_id):
         
-        unrelated_recordset = self.env["project.task"].sudo().search([
-            ("sale_line_id", "=", False), '|', ("project_id", "=", self.real_project_id.id), ("project_ref_id", "=", self.real_project_id.id)])
-        self.unrelated_task_ids = unrelated_recordset
+            unrelated_recordset = self.env["project.task"].sudo().search([
+                ("sale_line_id", "=", False), '|', ("project_id", "=", self.real_project_id.id), ("project_ref_id", "=", self.real_project_id.id)])
+            self.unrelated_task_ids = unrelated_recordset
     
     @api.multi
     def calculate_project_costs(self):
