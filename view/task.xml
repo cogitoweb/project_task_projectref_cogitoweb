@@ -11,6 +11,10 @@
             <field name="reviewer_id" position="after">
                 <field name="points"/>
             </field>
+            
+            <field name="user_id" position="attributes">
+					<attribute name="domain">[('groups_id.name', '=', 'Employee')]</attribute>
+				</field>
              
             <field name="project_id" position="after">
                 <field name="project_ref_id">Project reference</field>
