@@ -11,7 +11,7 @@
 			<field name="arch" type="xml">
 
 				<field name="user_id" position="attributes">
-					<attribute name="domain">[('groups_id.id', '=', 5)]</attribute>
+					<attribute name="domain">"[('groups_id.id', '=', %(base.group_user)d)]"</attribute>
 				</field>
 
 			</field>

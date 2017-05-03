@@ -13,8 +13,12 @@
             </field>
             
             <field name="user_id" position="attributes">
-					<attribute name="domain">[('groups_id.id', '=', 5)]</attribute>
-				</field>
+				<attribute name="domain">"[('groups_id.id', '=', %(base.group_user)d)]"</attribute>
+			</field>
+
+			<field name="reviewer_id" position="attributes">
+				<attribute name="domain">"[('groups_id.id', '=', %(base.group_user)d)]"</attribute>
+			</field>
              
             <field name="project_id" position="after">
                 <field name="project_ref_id">Project reference</field>
