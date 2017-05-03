@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<!-- permette di assegnare issues sono agli utenti del gruppo Employee -->
+		<record id="cogitoweb_project_issues_view" model="ir.ui.view">
+			<field name="name">CogitoWeb Project Issues</field>
+			<field name="model">project.issue</field>
+			<field name="inherit_id" ref="project_issue.project_issue_form_view" />
+			<field name="sequence">30</field>
+			<field name="arch" type="xml">
+
+				<field name="user_id" position="attributes">
+					<attribute name="domain">[('groups_id.name', '=', 'Employee')]</attribute>
+				</field>
+
+			</field>
+		</record>
+
+	</data>
+</openerp>
