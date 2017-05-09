@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="analytic line accrual">
                     <group>
-                        <field name="line_id"/>
+                        <field name="line_id" attrs="{'invisible': context.get('default_line_id', False)}"/>
                         <field name="date"/>
                         <field name="amount"/>
                     </group>
@@ -46,7 +46,7 @@
         </record>
         
         <menuitem id="account_analytic_line_accrual_action_tree_menu" name="Analytic line accruals" parent="account.menu_finance_entries"
-            sequence="20" groups="account.group_account_user" />
+            sequence="20" groups="account.group_account_user" action="account_analytic_line_accrual_action_tree"  />
         
 
         

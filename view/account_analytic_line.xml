@@ -14,20 +14,21 @@
 			<field name="priority">60</field>
 			<field name="arch" type="xml">
             
-                <xpath expr="//group[@string='General Accounting']" position="after">
+		<xpath expr="//group" position="after">
 
                     <group string="Accruals">
-                        <field name="accrual_ids">
-                            <tree>
-                                <field name="line_id" invisible="True"/>
-                                <field name="date" />
-                                <field name="amount" />
+                        <field name="accrual_ids" string="" context="{'default_line_id':active_id}">
+			    <field name="line_id" attrs="{'invisible':True}"/>
+                            
+			    <tree>
+                                <field name="date"/>
+                                <field name="amount"/>
                             </tree>
                         </field>
                     </group>
                     
                 </xpath>
-            
+                    
             </field>
         </record>
       
