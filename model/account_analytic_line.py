@@ -12,9 +12,6 @@ class AccountAnalyticLine(models.Model):
     
     @api.multi
     def _check_inv(self, vals):
-
-        _logger.info(pprint.pformat(vals))
-    
         if('amount' not in vals and 'account_id' not in vals and 'journal_id' not in vals and 'date' not in vals and 'invoice_id' not in vals and 'unit_amount' not in vals and 'general_account_id' not in vals):
             return True
         else:
@@ -23,3 +20,17 @@ class AccountAnalyticLine(models.Model):
                     raise ValidationError(_('You cannot modify an invoiced analytic line!'))
         
         return True
+
+    @api.multi
+    def generate_accrual(self):
+    
+        for r in self:
+            if(r.invoice_id and not r.accrual_ids):
+                
+                self.env['account.analytic.line.accrual'].sudo().create({
+                    'line_id': r.id,
+                    'date': r.date,
+                    'amount': r.amount
+                })
+    
+    

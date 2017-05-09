@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
    <data>
+   
+        <record id="server_analytic_line_generate_accrual" model="ir.actions.server">
+          <field name="name">analytic_line_generate_accrual</field>
+          <field name="model_id" ref="model_account_analytic_line"/>
+          <field name="state">code</field>
+          <field name="code">action = env["account.analytic.line"].generate_accrual()</field>
+        </record>
+
+        <record id="rule_analytic_line_generate_accrual" model="base.action.rule">
+          <field name="name">analytic_line_generate_accrual</field>
+          <field name="model_id" ref="model_account_analytic_line"/>
+          <field name="active">1</field>
+          <field name="kind">on_create_or_write</field>
+          <field name="server_action_ids" eval="[(6,0,[ref('server_analytic_line_generate_accrual')])]"/>
+        </record>
+   
         
         <!-- change default search_default_journal_id -->
         <record id="account.action_account_moves_all_a" model="ir.actions.act_window">
                 <field name="context">{'journal_type':'general', 'search_default_journal_id':1}</field>
         </record>
         
+        <!-- change default action_account_analytic_journal_open_form -->
         <record id="account.action_account_analytic_journal_open_form" model="ir.actions.act_window">
                 <field name="context">{'search_default_sales':1}</field>
         </record>
