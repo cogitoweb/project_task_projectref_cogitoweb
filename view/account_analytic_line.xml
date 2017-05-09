@@ -8,7 +8,7 @@
         </record>
         
         <record id="account.action_account_analytic_journal_open_form" model="ir.actions.act_window">
-                <field name="context">{'search_default_journal_id.type':'purchase'}</field>
+                <field name="context">{'search_default_sales':1}</field>
         </record>
         
         <record id="view_account_analytic_line_form_inherited" model="ir.ui.view">
