@@ -7,6 +7,9 @@
 
     'description': """
         Extension to enable Cost revenue on tasks
+        
+        * Accruals on analaytic lines
+        * Budget lines to receipts 
     """,
 
     'author': "Cogito",
@@ -16,14 +19,14 @@
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.6',
+    'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project', 'sale', 'sale_service'],
+    'depends': ['base', 'project', 'sale', 'sale_service', 'account'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'wizard/translate_tasks.xml',
 
         'view/project.xml',
@@ -32,6 +35,8 @@
         'view/budget_line.xml',
         'view/order.xml',
         'view/account.xml',
+        'view/account_analytic_line.xml',
+        'view/account_analytic_line_accrual.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

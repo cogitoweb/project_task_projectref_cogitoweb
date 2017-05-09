@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+        
+        <record id="account_analytic_line_accrual_form" model="ir.ui.view">
+            <field name="name">account.analytic.line.accrual.form</field>
+            <field name="model">account.analytic.line.accrual</field>
+            <field name="arch" type="xml">
+                <form string="analytic line accrual">
+                    <group>
+                        <field name="line_id"/>
+                        <field name="date"/>
+                        <field name="amount"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="account_analytic_line_accrual_tree" model="ir.ui.view">
+            <field name="name">account.analytic.line.accrual.tree</field>
+            <field name="model">account.analytic.line.accrual</field>
+            <field name="arch" type="xml">
+                <tree string="account analytic line accrual">
+                    <field name="line_id" />
+                    <field name="line_account_id" />
+                    <field name="line_date" />
+                    <field name="line_ref" />
+                    <field name="line_invoice_id" />
+                    <field name="line_amount" />
+                    <field name="date" />
+                    <field name="amount" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="account_analytic_line_accrual_action_tree" model="ir.actions.act_window">
+            <field name="name">account.analytic.line.accrual</field>
+            <field name="res_model">account.analytic.line.accrual</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account_analytic_line_accrual_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a analytic line accrual.
+              </p>
+            </field>
+        </record>
+        
+        <menuitem id="account_analytic_line_accrual_action_tree_menu" name="Analytic line accruals" parent="account.menu_finance_entries"
+            sequence="20" groups="account.group_account_user" />
+        
+
+        
+      
+   </data>
+</openerp>
