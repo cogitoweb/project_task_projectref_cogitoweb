@@ -8,7 +8,7 @@ class AccountAnalyticLine(models.Model):
     @api.model
     def _check_inv(self, vals):
     
-        if(not vals.has_key('amount') and not vals.has_key('account_id') and not vals.has_key('journal_id') and not vals.has_key('date') and not vals.has_key('invoice_id') and not vals.has_key('unit_amount') and not vals.has_key('general_account_id')):
+        if('amount' not in vals and 'account_id' not in vals and 'journal_id' not in vals and 'date' not in vals and 'invoice_id' not in vals and 'unit_amount' not in vals and 'general_account_id' not in vals):
             return True
 
         return super(AccountAnalyticLine,self)._check_inv(vals)
