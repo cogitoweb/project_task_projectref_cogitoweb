@@ -26,7 +26,7 @@
                             
 			    <tree>
                                 <field name="date"/>
-                                <field name="amount"/>
+                                <field name="amount" sum="Total amount"/>
                             </tree>
                         </field>
                     </group>

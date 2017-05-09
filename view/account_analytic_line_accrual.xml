@@ -33,9 +33,9 @@
                     <field name="line_date" />
                     <field name="line_ref" />
                     <field name="line_invoice_id" />
-                    <field name="line_amount" />
+                    <field name="line_amount" sum="Total Line amount" />
                     <field name="date" />
-                    <field name="amount" />
+                    <field name="amount" sum="Total amount" />
                 </tree>
             </field>
         </record>

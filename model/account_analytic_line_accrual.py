@@ -9,11 +9,11 @@ class AccountAnalyticLineAccrual(models.Model):
 
     line_id = fields.Many2one('account.analytic.line',required=True,auto_join=True)
 
-    line_date = fields.Date(string='Line date', related='line_id.date')
-    line_account_id = fields.Many2one(related='line_id.account_id')
-    line_ref = fields.Char(related='line_id.ref')
-    line_invoice_id = fields.Many2one(related='line_id.invoice_id')
-    line_amount = fields.Float(string='Line amount', related='line_id.amount')
+    line_date = fields.Date(string='Line date', related='line_id.date', readonly=True)
+    line_account_id = fields.Many2one(related='line_id.account_id', readonly=True)
+    line_ref = fields.Char(related='line_id.ref', readonly=True)
+    line_invoice_id = fields.Many2one(related='line_id.invoice_id', readonly=True)
+    line_amount = fields.Float(string='Line amount', related='line_id.amount', readonly=True)
 
     date = fields.Date(required=True)
     amount = fields.Float(required=True)

@@ -1,5 +1,9 @@
 from openerp import fields, models, api, _
 from openerp.exceptions import ValidationError
+import pprint
+
+import logging
+_logger = logging.getLogger(__name__)
 
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
@@ -8,6 +12,8 @@ class AccountAnalyticLine(models.Model):
     
     @api.multi
     def _check_inv(self, vals):
+
+        _logger.info(pprint.pformat(vals))
     
         if('amount' not in vals and 'account_id' not in vals and 'journal_id' not in vals and 'date' not in vals and 'invoice_id' not in vals and 'unit_amount' not in vals and 'general_account_id' not in vals):
             return True
