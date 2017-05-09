@@ -23,9 +23,13 @@ class AccountAnalyticLine(models.Model):
 
     @api.multi
     def generate_accrual(self):
+
+        active_ids = self._context.get('active_ids', [])
+        records = self.env['account.analytic.line'].browse(active_ids)
     
-        for r in self:
-            if(r.invoice_id and not r.accrual_ids):
+        for r in records:
+ 
+            if(r.invoice_id and r.journal_id and r.journal_id.type == 'sale' and not len(r.accrual_ids)):
                 
                 self.env['account.analytic.line.accrual'].sudo().create({
                     'line_id': r.id,
