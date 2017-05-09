@@ -27,7 +27,7 @@
             <field name="name">account.analytic.line.accrual.tree</field>
             <field name="model">account.analytic.line.accrual</field>
             <field name="arch" type="xml">
-                <tree string="account analytic line accrual">
+                <tree string="account analytic line accrual" default_order="date desc">
                     <field name="line_id" />
                     <field name="line_account_id" />
                     <field name="line_date" />
