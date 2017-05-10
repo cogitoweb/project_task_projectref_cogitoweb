@@ -17,3 +17,20 @@ class AccountAnalyticLineAccrual(models.Model):
 
     date = fields.Date(required=True)
     amount = fields.Float(required=True)
+
+    @api.multi
+    def write(self, vals):
+        
+        # try delete invalid rows
+        if('line_id' in vals and not vals['line_id']):
+            for r in self:
+                r.unlink()
+            
+            return True
+        
+        return super(AccountAnalyticLineAccrual, self).write(vals)
+            
+        
+    
+            
+    
