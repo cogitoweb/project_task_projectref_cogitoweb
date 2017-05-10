@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 class AccountAnalyticLineAccrual(models.Model):
     _name = 'account.analytic.line.accrual'
 
-    line_id = fields.Many2one('account.analytic.line',required=True,auto_join=True)
+    line_id = fields.Many2one('account.analytic.line',required=True,auto_join=True,ondelete='cascade')
 
     line_date = fields.Date(string='Line date', related='line_id.date', readonly=True)
     line_account_id = fields.Many2one(related='line_id.account_id', readonly=True)
