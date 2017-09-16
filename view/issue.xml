@@ -14,6 +14,10 @@
 					<attribute name="domain">"[('groups_id.id', '=', %(base.group_user)d)]"</attribute>
 				</field>
 
+				<xpath expr="//field[@name='timesheet_ids']/tree/field[@name='user_id']" position="attributes">
+					<attribute name="domain">"[('groups_id.id', '=', %(base.group_user)d)]"</attribute>
+				</xpath>
+				
 			</field>
 		</record>
 
