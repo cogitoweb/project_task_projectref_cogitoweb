@@ -9,9 +9,8 @@
         
         <field name="arch" type="xml">
 
-            
-                <xpath expr="//button[@name='set_done']" position="before">
-                    <button string="Translate Tasks" type="action" name="%(action_wizard_translate_tasks)d"
+                <xpath expr="//field[@name='date_start']" position="before">
+                    <button string="Reschedule Tasks" type="action" name="%(action_wizard_translate_tasks)d"
                             attrs="{'invisible': [('state', 'in', ('cancelled', 'close')) ]}"  class="oe_highlight"/>
                 </xpath>
             

@@ -7,11 +7,14 @@
 			<field name="arch" type="xml">
 				<form>
 					<group>
-						<group><field name="days" attrs="{'required': True}" /></group>
+						<group>
+							<field name="days" attrs="{'required': True}" />
+							<field name="new_stage" />
+						</group>
 					</group>
 
 					<footer>
-						<button type="object" name="translate_tasks" string="Translate Tasks" class="oe_highlight" />
+						<button type="object" name="translate_tasks" string="Reschedule Tasks" class="oe_highlight" />
 						<button special="cancel" string="Cancel" />
 					</footer>
 				</form>

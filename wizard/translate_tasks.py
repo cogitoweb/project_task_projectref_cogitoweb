@@ -15,21 +15,24 @@ class TranslateTasks(models.TransientModel):
     _name = 'translate.tasks'
     
     days = fields.Integer('Days to translate')
+    new_stage = fields.Many2one('project.task.type', string='New stage to')
     
     @api.one
     def translate_tasks(self, context=None):
         
-        #_logger.info('AAAAAA %s', pprint.pprint(context))
-        
         if not context or not context.get('active_id', False):
             raise Warning(_('Project is mandatory'))
+
+        new_stage_id = self.new_stage.id if self.new_stage else False
         
         # esegui query diretta  ####################################
+
+        query_stage = "stage_id = %s" % new_stage_id
         
         query_string = """update project_task set 
                             date_start = date_start + interval '%s' day, 
                             date_end = date_end + interval '%s' day,
-                            date_deadline = date_deadline + interval '%s' day 
+                            date_deadline = date_deadline + interval '%s' day """ + query_stage + """
                             where project_id = %s and date_start is not null and date_end is not null and date_deadline is not null
                             and stage_id not in (select id from project_task_type where closed = true)
                             """
