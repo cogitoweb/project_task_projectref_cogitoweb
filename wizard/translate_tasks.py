@@ -27,7 +27,7 @@ class TranslateTasks(models.TransientModel):
         
         # esegui query diretta  ####################################
 
-        query_stage = ", stage_id = %s" % new_stage_id
+        query_stage = ", stage_id = %s" % new_stage_id if new_stage_id else False
         
         query_string = """update project_task set 
                             date_start = date_start + interval '%s' day, 
