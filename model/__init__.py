@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import task
+import project
 import order
 import budget_line
 import account
