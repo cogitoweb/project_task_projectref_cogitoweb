@@ -29,8 +29,8 @@
         'security/ir.model.access.csv',
         'wizard/translate_tasks.xml',
 
-        'view/project.xml',
         'view/task.xml',
+        'view/project.xml',
         'view/issue.xml',
         'view/budget_line.xml',
         'view/order.xml',
