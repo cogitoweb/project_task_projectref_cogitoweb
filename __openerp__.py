@@ -22,15 +22,15 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project', 'sale', 'sale_service', 'account'],
+    'depends': ['base', 'project','project_issue', 'sale', 'sale_service', 'account'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'wizard/translate_tasks.xml',
 
-        'view/project.xml',
         'view/task.xml',
+        'view/project.xml',
         'view/issue.xml',
         'view/order.xml',
         'view/account.xml',

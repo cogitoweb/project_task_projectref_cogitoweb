@@ -9,6 +9,7 @@
             <xpath expr="//field[@name='company_id']" position="after">
                 <field name="sale_offer_markup" />
                 <field name="point_unit_price" />
+		<field name="project_id" readonly="True" />
             </xpath>
         </field>
       </record>

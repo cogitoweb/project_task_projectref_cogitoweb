@@ -77,5 +77,33 @@
         </field>
       </record>
 
+      <record model="ir.ui.view" id="project_task_projectref_search_form">
+         <field name="name">project.task.project_ref.search_form</field>
+         <field name="model">project.task</field>
+         <field name="priority">60</field>
+         <field name="inherit_id" ref="project.view_task_search_form"></field>
+         <field name="arch" type="xml">
+
+            <field name="stage_id" position="after">
+                <filter name="active_tasks" string="Active Tasks" domain="[('stage_id','not in',(7,8))]"/>
+            </field>
+
+    	</field>
+     </record>
+   
+     <record id="project_form_schedule_tasks" model="ir.actions.act_window">
+            <field name="name">Schedule project tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">gantt,tree,form,graph</field>
+            <field name="context">{'search_default_active_tasks': 1, 'search_default_project_id': [active_id],'default_project_id': active_id,'active_test': False}</field>
+            <field name="search_view_id" ref="project.view_task_search_form"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+              </p>
+            </field>
+        </record>
+
+
+
    </data>
 </openerp>
