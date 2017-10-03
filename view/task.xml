@@ -40,20 +40,21 @@
                 <attribute name="invisible">True</attribute>
             </field>
 
-            <field name="an_acc_by_prj" invisible="True"></field>
-            <field name="an_acc_by_prj_ref" invisible="True" ></field>
-
             <field name="sale_line_id" position="replace"></field>
             <field name="partner_id" position="replace"></field>
 
-            <xpath expr="//page[@string='Extra Info']">
+            <xpath expr="//page[@string='Extra Info']" position="after">
                 <page string="Accounting">
+
+                <field name="an_acc_by_prj" invisible="True"></field>
+                <field name="an_acc_by_prj_ref" invisible="True" ></field>
 
                     <group>
                         <group>
                             <field name="partner_id" />
                             <field name="sale_line_id" options="{'no_quick_create':True,'no_create_edit':True}"
                             domain="['&amp;', ('order_id.project_id', '!=', False), '|', ('order_id.project_id', '=', an_acc_by_prj_ref), ('order_id.project_id', '=', an_acc_by_prj)]" />
+                            <field name="sale_order_id" />
                         </group>
                         <group>
                             <field name="price" />
@@ -63,6 +64,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="milestone" />
                             <field name="invoiced" />
                         </group>
                         <group>

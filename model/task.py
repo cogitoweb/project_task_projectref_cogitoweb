@@ -90,7 +90,10 @@ class Task(models.Model):
     effective_cost = fields.Float(required=True, default=0, readonly=True, store=True)
     ms_project_data = fields.Text()
 
+    sale_order_id = fields.Many2one(related='sale_line_id.order_id', store=True)
+
     invoiced = fields.Boolean(defaut=False)
+    milestone = fields.Boolean(defaut=False)
     invoice_date = fields.Date()
     invoice_amount = fields.Float()
 

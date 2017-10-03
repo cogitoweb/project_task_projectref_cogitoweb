@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
    <data>
-            
+
     <record id="project.view_project_form_translate_tasks" model="ir.ui.view">
         <field name="name">project.project.form.translate.tasks</field>
         <field name="model">project.project</field>
@@ -15,6 +15,8 @@
                             <div>Scheduling</div>
                         </button>
                 </xpath>
+  
+  
 
                 <xpath expr="//group[@name='misc']" position="before">
                     <group>
