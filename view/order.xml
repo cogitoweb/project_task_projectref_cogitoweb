@@ -72,19 +72,6 @@
                             </field>
                         </page>
 
-                        <page string="Budget lines" attrs="{'invisible': [('project_id', '=', False)]}" >
-                            <field name="budget_line_ids" context="{'form_view_ref':'account_budget.view_crossovered_budget_line_form'}">
-
-                                <tree>
-                                    <field name="general_budget_id" />
-                                    <field name="invoice_date"/>
-                                    <field name="paid_date"/>
-                                    <field name="planned_amount" />
-                                </tree>
-
-                            </field>
-                        </page>
-
                 </xpath>
                 
             </field>

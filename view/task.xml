@@ -31,39 +31,48 @@
             <field name="project_id" position="attributes">
                 <attribute name="required">True</attribute>
             </field>
-             
-            <field name="sale_line_id" position="after">
-                <field name="price">Price</field>
-            </field>
-             
-            <field name="sale_line_id" position="after">
-                <field name="cost">Cost</field> 
-            </field>
-             
-             <field name="sale_line_id" position="after">
-                <field name="effective_cost">Effective Cost</field> 
-            </field>
-             
-            <field name="company_id" position="attributes">
-                <attribute name="readonly">True</attribute>
-            </field>
-             
+
             <field name="date_deadline" position="attributes">
                 <attribute name="required">True</attribute>
             </field>
 
-            <field name="company_id" position="after">
-                    <field name="an_acc_by_prj" invisible="True"></field>
-                    <field name="an_acc_by_prj_ref" invisible="True" ></field>
+            <field name="company_id" position="attributes">
+                <attribute name="invisible">True</attribute>
             </field>
-             
-            <field name="sale_line_id" position="attributes">
-                <attribute name="options">{'no_quick_create':True,'no_create_edit':True}</attribute>    
-                
-                <attribute name="domain">['&amp;', ('order_id.project_id', '!=', False), '|',
-                    ('order_id.project_id', '=', an_acc_by_prj_ref), ('order_id.project_id', '=', an_acc_by_prj)]</attribute>
-                
-            </field>
+
+            <field name="an_acc_by_prj" invisible="True"></field>
+            <field name="an_acc_by_prj_ref" invisible="True" ></field>
+
+            <field name="sale_line_id" position="replace"></field>
+            <field name="partner_id" position="replace"></field>
+
+            <xpath expr="//page[@string='Extra Info']">
+                <page string="Accounting">
+
+                    <group>
+                        <group>
+                            <field name="partner_id" />
+                            <field name="sale_line_id" options="{'no_quick_create':True,'no_create_edit':True}"
+                            domain="['&amp;', ('order_id.project_id', '!=', False), '|', ('order_id.project_id', '=', an_acc_by_prj_ref), ('order_id.project_id', '=', an_acc_by_prj)]" />
+                        </group>
+                        <group>
+                            <field name="price" />
+                            <field name="cost" />
+                            <field name="effective_cost" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="invoiced" />
+                        </group>
+                        <group>
+                            <field name="invoice_date" />
+                            <field name="invoice_amount" />
+                        </group>
+                    </group>
+
+                </page>
+            </xpath>
 
         </field>
       </record>

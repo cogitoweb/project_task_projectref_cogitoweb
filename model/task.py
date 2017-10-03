@@ -59,67 +59,91 @@ class Task(models.Model):
                         price = (t.cost/total_cost) * row_price
 
                 t.price = price  
-                 
+
+    def _default_invoice_date_cache(self):
+        
+        if('budget_line_cache_invoice_date' in self.cache):
+            return self.cache['budget_line_cache_invoice_date']
+            
+        return False
+    
+    def _default_planned_amount_cache(self):
+        
+        if('budget_line_cache_planned_amount' in self.cache):
+            return self.cache['budget_line_cache_planned_amount']
+            
+        return False
+
     ####        
     ####  FIELDS        
     ####        
 
     points = fields.Integer(string='Points')
-    
     project_ref_id = fields.Many2one('project.project', 'Project reference')
-    
     an_acc_by_prj = fields.Many2one('account.analytic.account', string="Contract/Analytic",
                                                      related='project_id.analytic_account_id',readonly=True)
     an_acc_by_prj_ref = fields.Many2one('account.analytic.account', string="Contract/Analytic reference",
                                                          related='project_ref_id.analytic_account_id',readonly=True)
     
     price = fields.Float(required=True, default=0, readonly=True, compute=compute_price, store=True, compute_sudo=True)
-    
     cost = fields.Float(required=True, default=0, readonly=True, compute=compute_cost, store=True, compute_sudo=True)
-    
     effective_cost = fields.Float(required=True, default=0, readonly=True, store=True)
-    
     ms_project_data = fields.Text()
-    
-    def _get_sale_order_line(self, cr, uid, sale_line_id, context=None):
-        sale_order_line = self.pool.get('sale.order.line')
-        sos = sale_order_line.browse(cr, uid, [sale_line_id], context=context)
-        so = sos and sos[0] or False
-        return so
-    
-    def _get_current_task(self, cr, uid, ids, context=None):
-        task = self.pool.get('project.task')
-        tks = task.browse(cr, uid, ids, context=context)
-        t = tks and tks[0] or False
-        return t
-    
-    def write(self, cr, uid, ids, values, context=None):
-        """ When populating sale_line_id create procurment """
-        res = super(Task, self).write(cr, uid, ids, values, context=context)
-        
-        t = self._get_current_task(cr, uid, ids, values)
 
-        if values.get('sale_line_id') and t and (t.procurement_id.id == False):
-            
-            procurement = self.pool.get('procurement.order')
-            sale_order_line = self._get_sale_order_line(cr, uid, values.get('sale_line_id'))
-            
-            procurement_id = procurement.create(cr, uid, {
-                'origin': '%s' % ('AUTO PR FROM ' + t.name),
-                'product_uom': sale_order_line.product_uom.id,
-                'product_uos_qty': sale_order_line.product_uos_qty,
-                'product_uom_qty': sale_order_line.product_uos_qty,
-                'product_uos': sale_order_line.product_uos.id,
-                'company_id': sale_order_line.company_id.id,
-                'product_qty': 1,
-                'name': '%s' % ('PR FROM ' + t.name),
-                'product_id': sale_order_line.product_id.id,
-                'date_planned': t.date_deadline or fields.Date.today(),
-                'sale_line_id': sale_order_line.id,
-                'task_id': t.id,
-            },context=context)
-            
-            self.write(cr, uid, [t.id], {'procurement_id': procurement_id}, context=context)
+    invoiced = fields.Boolean(defaut=False)
+    invoice_date = fields.Date()
+    invoice_amount = fields.Float()
+
+    @api.multi
+    def markinvoiced(self):
+        
+        self.ensure_one()  
+        self.invoiced = True
+    
+    @api.multi
+    def invoice(self):
+        
+        self.ensure_one()  
+        self.invoiced = True
+        
+        view_id = self.env['ir.model.data'].get_object_reference('sale', 'view_sale_advance_payment_inv')[1]
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.advance.payment.inv',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': view_id,
+            'target': 'new',
+            'context': {'active_ids': [self.sale_order_id.id], 'active_model':'sale.order'}
+        }
+        
+    @api.multi
+    def write(self,values):
+        """ When populating sale_line_id create procurment """
+        res = super(Task, self).write(values)
+        
+        for t in self:
+            if values.get('sale_line_id') and t and (t.procurement_id.id == False):
+                
+                sale_order_line = self.env['sale.order.line'].browse([values.get('sale_line_id')])
+
+                procurement_id = self.env['procurement.order'].create({
+                    'origin': '%s' % ('AUTO PR FROM ' + t.name),
+                    'product_uom': sale_order_line.product_uom.id,
+                    'product_uos_qty': sale_order_line.product_uos_qty,
+                    'product_uom_qty': sale_order_line.product_uos_qty,
+                    'product_uos': sale_order_line.product_uos.id,
+                    'company_id': sale_order_line.company_id.id,
+                    'product_qty': 1,
+                    'name': '%s' % ('PR FROM ' + t.name),
+                    'product_id': sale_order_line.product_id.id,
+                    'date_planned': t.date_deadline or fields.Date.today(),
+                    'sale_line_id': sale_order_line.id,
+                    'task_id': t.id,
+                })
+                
+                t.write({'procurement_id': procurement_id})
             
         return res
     

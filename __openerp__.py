@@ -32,7 +32,6 @@
         'view/project.xml',
         'view/task.xml',
         'view/issue.xml',
-        'view/budget_line.xml',
         'view/order.xml',
         'view/account.xml',
         'view/account_analytic_line.xml',

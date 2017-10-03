@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields, api, exceptions, tools
 
 import pprint
-#Import logger
 import logging
-#Get the logger
 _logger = logging.getLogger(__name__)
 
 class OrderLine(models.Model):
@@ -13,7 +10,6 @@ class OrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     tasks_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_tasks_ids")
-    
     tasks_count = fields.Integer(compute="compute_tasks_ids", string="Tasks")
     
     @api.one
@@ -34,12 +30,8 @@ class Order(models.Model):
     _inherit = 'sale.order'
     
     sale_offer_markup = fields.Float(related='project_id.sale_offer_markup', readonly=True)
-
     real_project_id = fields.Many2one('project.project', string="Project", related="project_id.project_id", readonly=True)
-    
     unrelated_task_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_unrelated_task_ids")
-    
-    budget_line_ids = fields.One2many('crossovered.budget.lines', 'sale_order_id', string="Budget Lines")
 
     @api.one
     def compute_unrelated_task_ids(self):
