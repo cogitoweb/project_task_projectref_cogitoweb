@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import invoice
 import task
 import project
 import order

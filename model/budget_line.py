@@ -35,12 +35,7 @@ class BudgetLine(models.Model):
     general_budget_id = fields.Many2one(default=_default_budget_post)
 
     # added
-    sale_order_id = fields.Many2one('sale.order', string="Sale Order")
-    sale_order_state = fields.Selection(related='sale_order_id.state')
     analytic_account_name = fields.Char(related='analytic_account_id.name')
     partner_id = fields.Many2one(related='analytic_account_id.partner_id')
-    invoiced = fields.Boolean(defaut=False)
-    invoice_date = fields.Date()
-    planned_amount = fields.Float()
     
     
