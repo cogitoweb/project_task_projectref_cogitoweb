@@ -22,7 +22,7 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project','project_issue', 'sale', 'sale_service', 'account'],
+    'depends': ['base_cogitoweb', 'account', 'sale_service'],
 
     # always loaded
     'data': [
