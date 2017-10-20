@@ -114,8 +114,8 @@
          <field name="arch" type="xml">
 
             <search>
-                <filter name="to_invoice" string="Da Fatturare" domain="[('stage_id','=',(5002))]"/>
-
+                <filter name="to_invoice" string="Da Fatturare" domain="[('stage_id','=',(5002)),('sale_order_state', '=', 'manual'),('invoiced','=',False)]"/>
+                <separator/>
                 <filter name="invoiced" string="Fatturato" domain="[('invoiced','=',True)]"/>
             </search>
 
@@ -126,21 +126,26 @@
             <field name="name">task_to_invoice_tree</field>
             <field name="model">project.task</field>
             <field name="arch" type="xml">
-                <tree default_order="date_deadline desc">
-                    <field name="project_id" />
+                <tree default_order="date_deadline asc">
+                    <field name="project_ref_id" />
                     <field name="name" />
                     <field name="date_deadline" />
                     <field name="milestone" />
                     <field name="invoiced" />
-                    <field name="invoice_amount" />
+                    <field name="sale_order_state" />
+                    <field name="invoice_amount" sum="Amount"/>
                     <field name="invoice_date" />
+                    <button string="Ignora" name="markinvoiced" type="object"
+                            attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}" />
+                    <button string="Invoice" name="invoice" type="object" class="oe_highlight" attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}"
+                            context="{'default_advance_payment_method':'fixed','default_amount':invoice_amount}" />
                 </tree>
             </field>
         </record>
 
 
     <record id="task_to_invoce_action" model="ir.actions.act_window">
-            <field name="name">Invoce project tasks</field>
+            <field name="name">Fatturazione</field>
             <field name="res_model">project.task</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{'search_default_to_invoice': 1}</field>

@@ -30,3 +30,10 @@ insert into project_task(create_date,
   0,0, b.sale_order_id, false, b.invoiced, b.planned_amount, b.invoice_date,0,0,0
   from crossovered_budget_lines b
   inner join account_analytic_account a on b.analytic_account_id = a.id
+  inner join sale_order s on b.sale_order_id = s.id
+  where s.state = 'manual';
+
+
+---- todo: riportare lo stato dell'ordine sul task
+
+  

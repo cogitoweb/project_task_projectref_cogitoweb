@@ -60,6 +60,12 @@ class Task(models.Model):
 
                 t.price = price  
 
+    @api.onchange('sale_line_id')
+    def onchange_sale_line_id(self):
+
+        return {'sale_order_id': self.sale_line_id.order_id.id}
+
+
     def _default_invoice_date_cache(self):
         
         if('budget_line_cache_invoice_date' in self.cache):
@@ -90,7 +96,8 @@ class Task(models.Model):
     effective_cost = fields.Float(required=True, default=0, readonly=True, store=True)
     ms_project_data = fields.Text()
 
-    sale_order_id = fields.Many2one(related='sale_line_id.order_id', store=True)
+    sale_order_id = fields.Many2one('sale.order')
+    sale_order_state = fields.Selection(related='sale_order_id.state')
 
     invoiced = fields.Boolean(defaut=False)
     milestone = fields.Boolean(defaut=False)
@@ -102,12 +109,14 @@ class Task(models.Model):
         
         self.ensure_one()  
         self.invoiced = True
+        self.stage_id = 8
     
     @api.multi
     def invoice(self):
         
         self.ensure_one()  
         self.invoiced = True
+        self.stage_id = 7
         
         view_id = self.env['ir.model.data'].get_object_reference('sale', 'view_sale_advance_payment_inv')[1]
         
