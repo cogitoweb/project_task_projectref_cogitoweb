@@ -32,6 +32,7 @@ class Order(models.Model):
     sale_offer_markup = fields.Float(related='project_id.sale_offer_markup', readonly=True)
     real_project_id = fields.Many2one('project.project', string="Project", related="project_id.project_id", readonly=True)
     unrelated_task_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_unrelated_task_ids")
+    task_to_invoice_ids = fields.One2many('project.task', 'sale_order_id', string="Billing plan")
 
     @api.one
     def compute_unrelated_task_ids(self):

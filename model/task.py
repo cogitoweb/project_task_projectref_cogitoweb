@@ -63,7 +63,7 @@ class Task(models.Model):
     @api.onchange('sale_line_id')
     def onchange_sale_line_id(self):
 
-        return {'sale_order_id': self.sale_line_id.order_id.id}
+        self.sale_order_id = self.sale_line_id.order_id
 
 
     def _default_invoice_date_cache(self):
@@ -132,6 +132,9 @@ class Task(models.Model):
         
     @api.multi
     def write(self,values):
+
+        values = self.populate_billing_task(values)
+
         """ When populating sale_line_id create procurment """
         res = super(Task, self).write(values)
         
@@ -158,6 +161,43 @@ class Task(models.Model):
                 t.write({'procurement_id': procurement_id})
             
         return res
+
+    
+    @api.multi
+    def create(self,values):
+
+        values = self.populate_billing_task(values)
+
+        return super(Task, self).create(values)
+
+    # gestione per righe di fatturazione
+    # nel caso di creazione task da ordine 
+    def populate_billing_task(self, values):
+
+        if(self.env.context.get('billing_plan')):
+
+            # nomi e date da ordine
+            values['name'] = 'Fatturazione del %s' % values['invoice_date']
+            values['date_deadline'] = values['invoice_date']
+            values['date_start'] = values['invoice_date']
+            values['date_end'] = values['invoice_date']
+
+            order = self.env['sale.order'].browse(values['sale_order_id'])
+            config_analytic_account_administration = self.env['sale.order'].search([('key', '=', 'internal_analytic_account_administration_id')], limit=1)
+            internal_analytic_account_administration = self.env['analytic.account'].browse(config_analytic_account_administration.value)
+
+            values['user_id'] = internal_analytic_account_administration.manager_id
+            values['reviewer_id'] = internal_analytic_account_administration.manager_id
+
+            ## se milestone tutti i rif sono al progetto
+            if(values['milestone']):
+                values['project_id'] = order.project_id
+                values['project_ref_id'] = internal_analytic_account_administration.project_id
+            else:
+                values['project_id'] = internal_analytic_account_administration.project_id
+                values['project_ref_id'] = order.project_id
+
+        return values
     
     # fix defect on date_deadline setup
     # and date gant copy on date_ends

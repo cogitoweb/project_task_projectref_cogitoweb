@@ -24,6 +24,27 @@
                 <field name="pricelist_id" position="after">
                     <field name="sale_offer_markup" />
                 </field>
+
+                <xpath expr="//page[@string='Other Information']" position="before">
+                    
+                    <page string="Billing plan" attrs="{'invisible': [('project_id', '=', False)]}" >
+                        <field name="task_to_invoice_ids" context="{'default_sale_order_id':active_id,'billing_plan':True}">
+                                
+                            <tree editable="bottom">
+                                <field name="invoice_date" required="True"/>
+                                <field name="invoice_amount" />
+                                <field name="milestone" />
+                                <field name="invoiced" readonly="True"/>
+                                <button name="ptr_call_repetition_wizard" type="object" string="RP" 
+                                        attrs="{'invisible': ['|', ('create_date', '=', False), ('invoiced','=',True)]}"/>
+                                <field name="sale_order_id" invisible="True"/>
+                                <field name="create_date" invisible="True"/>
+                            </tree>
+                        
+                        </field>
+                    </page>
+
+                </xpath>
                 
                 <xpath expr="//field[@name='order_line']/form/div" position="after">
                 
@@ -52,7 +73,7 @@
                     
                 </xpath>
                 
-                <xpath expr="//page[@string='Order Lines']" position="after">
+                <xpath expr="//page[@string='Other Information']" position="after">
                 
                         <page string="Unrelated Tasks" attrs="{'invisible': [('project_id', '=', False)]}" >
                             <field name="unrelated_task_ids" readonly="True">
