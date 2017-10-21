@@ -99,6 +99,7 @@ class Task(models.Model):
     sale_order_id = fields.Many2one('sale.order')
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
+    billing_plan = fields.Boolean(defaut=False)
     invoiced = fields.Boolean(defaut=False)
     milestone = fields.Boolean(defaut=False)
     invoice_date = fields.Date()
@@ -163,7 +164,7 @@ class Task(models.Model):
         return res
 
     
-    @api.multi
+    @api.model
     def create(self,values):
 
         values = self.populate_billing_task(values)
@@ -174,28 +175,30 @@ class Task(models.Model):
     # nel caso di creazione task da ordine 
     def populate_billing_task(self, values):
 
-        if(self.env.context.get('billing_plan')):
+        if('billing_plan' in values and values['billing_plan']):
 
             # nomi e date da ordine
-            values['name'] = 'Fatturazione del %s' % values['invoice_date']
+            values['name'] = 'Fatturazione del %s' % parser.parse(values['invoice_date']).strftime("%d/%m/%Y")
+            ## stato da fatturare
+            values['stage_id'] = 5002
             values['date_deadline'] = values['invoice_date']
             values['date_start'] = values['invoice_date']
             values['date_end'] = values['invoice_date']
 
             order = self.env['sale.order'].browse(values['sale_order_id'])
-            config_analytic_account_administration = self.env['sale.order'].search([('key', '=', 'internal_analytic_account_administration_id')], limit=1)
-            internal_analytic_account_administration = self.env['analytic.account'].browse(config_analytic_account_administration.value)
+            config_analytic_account_administration = self.env['ir.config_parameter'].search([('key', '=', 'internal_analytic_account_administration_id')], limit=1)
+            internal_analytic_account_administration = self.env['account.analytic.account'].browse([int(config_analytic_account_administration.value)])
 
-            values['user_id'] = internal_analytic_account_administration.manager_id
-            values['reviewer_id'] = internal_analytic_account_administration.manager_id
+            values['user_id'] = internal_analytic_account_administration.manager_id.id
+            values['reviewer_id'] = internal_analytic_account_administration.manager_id.id
 
             ## se milestone tutti i rif sono al progetto
             if(values['milestone']):
-                values['project_id'] = order.project_id
-                values['project_ref_id'] = internal_analytic_account_administration.project_id
+                values['project_id'] = order.real_project_id.id
+                values['project_ref_id'] = internal_analytic_account_administration.project_id.id
             else:
-                values['project_id'] = internal_analytic_account_administration.project_id
-                values['project_ref_id'] = order.project_id
+                values['project_id'] = internal_analytic_account_administration.project_id.id
+                values['project_ref_id'] = order.real_project_id.id
 
         return values
     

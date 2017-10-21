@@ -68,8 +68,8 @@
                             <field name="invoiced" />
                         </group>
                         <group>
-                            <field name="invoice_date" />
-                            <field name="invoice_amount" />
+                            <field name="invoice_date" readonly="True" />
+                            <field name="invoice_amount" readonly="True" />
                         </group>
                     </group>
 

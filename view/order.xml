@@ -28,7 +28,7 @@
                 <xpath expr="//page[@string='Other Information']" position="before">
                     
                     <page string="Billing plan" attrs="{'invisible': [('project_id', '=', False)]}" >
-                        <field name="task_to_invoice_ids" context="{'default_sale_order_id':active_id,'billing_plan':True}">
+                        <field name="task_to_invoice_ids" context="{'default_sale_order_id':active_id,'default_billing_plan':True}">
                                 
                             <tree editable="bottom">
                                 <field name="invoice_date" required="True"/>
@@ -37,6 +37,7 @@
                                 <field name="invoiced" readonly="True"/>
                                 <button name="ptr_call_repetition_wizard" type="object" string="RP" 
                                         attrs="{'invisible': ['|', ('create_date', '=', False), ('invoiced','=',True)]}"/>
+                                <field name="billing_plan" invisible="True"/>
                                 <field name="sale_order_id" invisible="True"/>
                                 <field name="create_date" invisible="True"/>
                             </tree>
