@@ -13,6 +13,17 @@ _logger = logging.getLogger(__name__)
 class Task(models.Model):
 
     _inherit = 'project.task'
+
+    @api.depends('milestone', 'project_id', 'project_ref_id')
+    def compute_billing_project(self):
+        
+        # ricava il costo orario dal contratto
+        for t in self:
+            
+            if(t.milestone):
+                t.billing_project = t.project_id
+            else:
+                t.billing_project = t.project_ref_id
     
     @api.depends('planned_hours', 'user_id')
     def compute_cost(self):
@@ -100,6 +111,7 @@ class Task(models.Model):
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
     billing_plan = fields.Boolean(defaut=False)
+    billing_project = fields.Many2one('project.project', compute=compute_billing_project)
     invoiced = fields.Boolean(defaut=False)
     milestone = fields.Boolean(defaut=False)
     invoice_date = fields.Date()
@@ -181,7 +193,11 @@ class Task(models.Model):
             values['name'] = 'Fatturazione del %s' % parser.parse(values['invoice_date']).strftime("%d/%m/%Y")
             ## stato da fatturare
             values['stage_id'] = 5002
-            values['date_deadline'] = values['invoice_date']
+
+            if(not 'date_deadline' in values or not values['date_deadline']):
+                values['date_deadline'] = values['invoice_date']
+            else:
+                values['invoice_date'] = values['date_deadline']
             values['date_start'] = values['invoice_date']
             values['date_end'] = values['invoice_date']
 

@@ -127,7 +127,7 @@
             <field name="model">project.task</field>
             <field name="arch" type="xml">
                 <tree default_order="date_deadline asc">
-                    <field name="project_ref_id" />
+                    <field name="billing_project" />
                     <field name="name" />
                     <field name="date_deadline" />
                     <field name="milestone" />
@@ -156,9 +156,6 @@
               </p>
             </field>
     </record>
-
-
-
 
     <menuitem id="task_to_invoice" name="Fatturazione" parent="account.menu_finance_receivables" sequence="100"
                   action="task_to_invoce_action" />
