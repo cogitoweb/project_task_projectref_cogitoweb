@@ -14,6 +14,17 @@ class Task(models.Model):
 
     _inherit = 'project.task'
 
+    @api.model
+    def _needaction_domain_get(self):
+        return []
+
+    @api.depends('sale_order_state', 'invoiced', 'stage_id')
+    def compute_can_be_invoiced(self):
+
+        for t in self:
+            t.can_be_invoiced = (t.sale_order_state == 'manual' and (t.invoiced == True or t.stage_id not in [5002]))
+
+
     @api.depends('milestone', 'project_id', 'project_ref_id')
     def compute_billing_project(self):
         
@@ -24,6 +35,11 @@ class Task(models.Model):
                 t.billing_project = t.project_id
             else:
                 t.billing_project = t.project_ref_id
+
+    def search_billing_project(self, operator, value):
+        if operator == 'like':
+            operator = 'ilike'
+        return ['|', ('project_ref_id.name', operator, value),('project_id.name', operator, value)]
     
     @api.depends('planned_hours', 'user_id')
     def compute_cost(self):
@@ -111,7 +127,8 @@ class Task(models.Model):
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
     billing_plan = fields.Boolean(defaut=False)
-    billing_project = fields.Many2one('project.project', compute=compute_billing_project)
+    billing_project = fields.Many2one('project.project', compute=compute_billing_project, search=search_billing_project)
+    can_be_invoiced = fields.Boolean(compute=compute_can_be_invoiced)
     invoiced = fields.Boolean(defaut=False)
     milestone = fields.Boolean(defaut=False)
     invoice_date = fields.Date()
@@ -123,6 +140,13 @@ class Task(models.Model):
         self.ensure_one()  
         self.invoiced = True
         self.stage_id = 8
+
+    @api.multi
+    def marktoinvoice(self):
+        
+        self.ensure_one()  
+        self.invoiced = False
+        self.stage_id = 5002
     
     @api.multi
     def invoice(self):
@@ -146,7 +170,7 @@ class Task(models.Model):
     @api.multi
     def write(self,values):
 
-        values = self.populate_billing_task(values)
+        values = self.populate_billing_task(values, 'write')
 
         """ When populating sale_line_id create procurment """
         res = super(Task, self).write(values)
@@ -179,25 +203,27 @@ class Task(models.Model):
     @api.model
     def create(self,values):
 
-        values = self.populate_billing_task(values)
+        values = self.populate_billing_task(values, 'create')
 
         return super(Task, self).create(values)
 
     # gestione per righe di fatturazione
     # nel caso di creazione task da ordine 
-    def populate_billing_task(self, values):
+    def populate_billing_task(self, values, mode):
 
         if('billing_plan' in values and values['billing_plan']):
-
-            # nomi e date da ordine
-            values['name'] = 'Fatturazione del %s' % parser.parse(values['invoice_date']).strftime("%d/%m/%Y")
-            ## stato da fatturare
-            values['stage_id'] = 5002
 
             if(not 'date_deadline' in values or not values['date_deadline']):
                 values['date_deadline'] = values['invoice_date']
             else:
                 values['invoice_date'] = values['date_deadline']
+
+            # nomi e date da ordine
+            values['name'] = 'Fatturazione del %s' % parser.parse(values['invoice_date']).strftime("%d/%m/%Y")
+            ## stato da fatturare (5002)
+            ## se milestone altrimenti specifica (2)
+            values['stage_id'] = 2 if values['milestone'] else 5002
+
             values['date_start'] = values['invoice_date']
             values['date_end'] = values['invoice_date']
 

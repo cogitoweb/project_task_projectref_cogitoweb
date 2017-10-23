@@ -5,26 +5,6 @@ import pprint
 import logging
 _logger = logging.getLogger(__name__)
 
-class OrderLine(models.Model):
-
-    _inherit = 'sale.order.line'
-    
-    tasks_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_tasks_ids")
-    tasks_count = fields.Integer(compute="compute_tasks_ids", string="Tasks")
-    
-    @api.one
-    def compute_tasks_ids(self):
-        
-        related_recordset = self.env["project.task"].sudo().search([("sale_line_id", "=", self.id)])
-        self.tasks_ids = related_recordset
-        self.tasks_count = len(related_recordset)
-        
-    @api.onchange('price_unit')
-    def compute_tasks_prices(self):
-        
-        for t in self.sudo().tasks_ids:
-            t.compute_price()
-
 class Order(models.Model):
 
     _inherit = 'sale.order'
@@ -33,6 +13,23 @@ class Order(models.Model):
     real_project_id = fields.Many2one('project.project', string="Project", related="project_id.project_id", readonly=True)
     unrelated_task_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_unrelated_task_ids")
     task_to_invoice_ids = fields.One2many('project.task', 'sale_order_id', string="Billing plan")
+
+    ## annullo eventuali task di fatturazione collegati all'annullamento dell'ordine
+    ## annullo anche task non chiusi che contengono il nome ordine (fatturazione, gest produzione etc..)
+    ## 
+    @api.multi
+    def write(self,values):
+
+        for o in self:
+            if('state' in values and values['state'] == 'cancel'):
+                
+                o.task_to_invoice_ids.filtered(lambda record: record.stage_id not in [7]).write({'stage_id': 8})
+
+                o.unrelated_task_ids.filtered(lambda record: record.stage_id not in [7] and o.name in record.name).write({'stage_id': 8})
+
+        res = super(Order, self).write(values)
+
+        return res
 
     @api.one
     def compute_unrelated_task_ids(self):

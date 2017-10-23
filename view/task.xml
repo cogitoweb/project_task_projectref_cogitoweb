@@ -48,6 +48,7 @@
 
                 <field name="an_acc_by_prj" invisible="True"></field>
                 <field name="an_acc_by_prj_ref" invisible="True" ></field>
+                <field name="sale_order_state" invisible="True" ></field>
 
                     <group>
                         <group>
@@ -66,6 +67,8 @@
                         <group>
                             <field name="milestone" />
                             <field name="invoiced" />
+                            <field name="can_be_invoiced" invisible="True" />
+                            <button name="marktoinvoice" string="Imposta 'da fatturare'" type="object" attrs="{'invisible':[('can_be_invoiced', '!=', True)]}" />
                         </group>
                         <group>
                             <field name="invoice_date" readonly="True" />
@@ -114,6 +117,10 @@
          <field name="arch" type="xml">
 
             <search>
+                <field name="billing_project" />
+                <field name="invoice_date" />
+
+
                 <filter name="to_invoice" string="Da Fatturare" domain="[('stage_id','=',(5002)),('sale_order_state', '=', 'manual'),('invoiced','=',False)]"/>
                 <separator/>
                 <filter name="invoiced" string="Fatturato" domain="[('invoiced','=',True)]"/>
@@ -129,7 +136,6 @@
                 <tree default_order="date_deadline asc">
                     <field name="billing_project" />
                     <field name="name" />
-                    <field name="date_deadline" />
                     <field name="milestone" />
                     <field name="invoiced" />
                     <field name="sale_order_state" />

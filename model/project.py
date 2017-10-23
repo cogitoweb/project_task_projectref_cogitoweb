@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
+#    Copyright (C) 2017 2z@cogito
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify

@@ -1,0 +1,472 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* project_task_projectref_cogitoweb
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-21 13:58+0000\n"
+"PO-Revision-Date: 2017-10-21 13:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.issue:project_task_projectref_cogitoweb.cogitoweb_project_issues_view
+#: view:project.task:project_task_projectref_cogitoweb.project_task_projectref_view_form
+msgid "\"[('groups_id.id', '=', 5)]\""
+msgstr "\"[('groups_id.id', '=', 5)]\""
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.actions.act_window,help:project_task_projectref_cogitoweb.account_analytic_line_accrual_action_tree
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"                Click to add a analytic line accrual.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"                Click to add a analytic line accrual.\n"
+"              </p>\n"
+"            "
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.actions.act_window,help:project_task_projectref_cogitoweb.project_form_schedule_tasks
+#: model:ir.actions.act_window,help:project_task_projectref_cogitoweb.task_to_invoce_action
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"              </p>\n"
+"            "
+
+#. module: project_task_projectref_cogitoweb
+#: field:crossovered.budget.lines,analytic_account_name:0
+msgid "Account/Contract Name"
+msgstr "Account/Contract Name"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.task:project_task_projectref_cogitoweb.project_task_projectref_view_form
+msgid "Accounting"
+msgstr "Accounting"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line,accrual_ids:0
+msgid "Accrual ids"
+msgstr "Accrual ids"
+
+#. module: project_task_projectref_cogitoweb
+#: view:account.analytic.line:project_task_projectref_cogitoweb.view_account_analytic_line_form_inherited
+msgid "Accruals"
+msgstr "Accruals"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.task:project_task_projectref_cogitoweb.project_task_projectref_search_form
+msgid "Active Tasks"
+msgstr "Task attivi"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,amount:0
+#: view:project.task:project_task_projectref_cogitoweb.task_to_invoice_tree
+msgid "Amount"
+msgstr "Importo"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,line_account_id:0
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Contabilità Analitica"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.ui.menu,name:project_task_projectref_cogitoweb.account_analytic_line_accrual_action_tree_menu
+msgid "Analytic line accruals"
+msgstr "Analytic line accruals"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,billing_plan:0
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+#: field:sale.order,task_to_invoice_ids:0
+msgid "Billing plan"
+msgstr "Piano di fatturazione"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,billing_project:0
+msgid "Billing project"
+msgstr "Progetto di fatturazione"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_crossovered_budget_lines
+msgid "Budget Line"
+msgstr "Riga del budget"
+
+#. module: project_task_projectref_cogitoweb
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Calculate Prices"
+msgstr "Calcola prezzi"
+
+#. module: project_task_projectref_cogitoweb
+#: help:account.analytic.line.accrual,line_amount:0
+msgid "Calculated by multiplying the quantity and the price given in the Product's cost price. Always expressed in the company main currency."
+msgstr "Calculated by multiplying the quantity and the price given in the Product's cost price. Always expressed in the company main currency."
+
+#. module: project_task_projectref_cogitoweb
+#: view:translate.tasks:project_task_projectref_cogitoweb.wizard_translate_tasks
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,an_acc_by_prj:0
+msgid "Contract/Analytic"
+msgstr "Contract/Analytic"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,an_acc_by_prj_ref:0
+msgid "Contract/Analytic reference"
+msgstr "Contract/Analytic reference"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,cost:0
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Cost"
+msgstr "Costo"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,create_uid:0
+#: field:translate.tasks,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,create_date:0
+#: field:translate.tasks,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: project_task_projectref_cogitoweb
+#: field:crossovered.budget.lines,partner_id:0
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.task:project_task_projectref_cogitoweb.task_to_invoice_search
+msgid "Da Fatturare"
+msgstr "Da Fatturare"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,date:0
+msgid "Date"
+msgstr "Date"
+
+#. module: project_task_projectref_cogitoweb
+#: field:translate.tasks,days:0
+msgid "Days to translate"
+msgstr "Days to translate"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,display_name:0
+#: field:translate.tasks,display_name:0
+msgid "Display Name"
+msgstr "Display Name"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,effective_cost:0
+msgid "Effective cost"
+msgstr "Effective cost"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.task:project_task_projectref_cogitoweb.task_to_invoice_search
+msgid "Fatturato"
+msgstr "Fatturato"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.actions.act_window,name:project_task_projectref_cogitoweb.task_to_invoce_action
+#: model:ir.ui.menu,name:project_task_projectref_cogitoweb.task_to_invoice
+msgid "Fatturazione"
+msgstr "Fatturazione"
+
+#. module: project_task_projectref_cogitoweb
+#: help:project.task,sale_order_state:0
+msgid "Gives the status of the quotation or sales order.              \n"
+"The exception status is automatically set when a cancel operation occurs               in the invoice validation (Invoice Exception) or in the picking list process (Shipping Exception).\n"
+"The 'Waiting Schedule' status is set when the invoice is confirmed               but waiting for the scheduler to run on the order date."
+msgstr "Gives the status of the quotation or sales order.              \n"
+"The exception status is automatically set when a cancel operation occurs               in the invoice validation (Invoice Exception) or in the picking list process (Shipping Exception).\n"
+"The 'Waiting Schedule' status is set when the invoice is confirmed               but waiting for the scheduler to run on the order date."
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,id:0
+#: field:translate.tasks,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.task:project_task_projectref_cogitoweb.task_to_invoice_tree
+msgid "Ignora"
+msgstr "Ignora"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,line_invoice_id:0
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_account_invoice
+#: view:project.task:project_task_projectref_cogitoweb.task_to_invoice_tree
+msgid "Invoice"
+msgstr "Fattura"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,invoice_amount:0
+msgid "Invoice amount"
+msgstr "Invoice amount"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,invoice_date:0
+msgid "Invoice date"
+msgstr "Data fattura"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,invoiced:0
+msgid "Invoiced"
+msgstr "Fatturato"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,__last_update:0
+#: field:translate.tasks,__last_update:0
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,write_uid:0
+#: field:translate.tasks,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,write_date:0
+#: field:translate.tasks,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,line_amount:0
+msgid "Line amount"
+msgstr "Line amount"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,line_date:0
+msgid "Line date"
+msgstr "Line date"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,line_id:0
+msgid "Line id"
+msgstr "Line id"
+
+#. module: project_task_projectref_cogitoweb
+#: help:project.task,an_acc_by_prj:0
+#: help:project.task,an_acc_by_prj_ref:0
+msgid "Link this project to an analytic account if you need financial management on projects. It enables you to connect projects with budgets, planning, cost and revenue analysis, timesheets on projects, etc."
+msgstr "Link this project to an analytic account if you need financial management on projects. It enables you to connect projects with budgets, planning, cost and revenue analysis, timesheets on projects, etc."
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,milestone:0
+msgid "Milestone"
+msgstr "Milestone"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,ms_project_data:0
+msgid "Ms project data"
+msgstr "Ms project data"
+
+#. module: project_task_projectref_cogitoweb
+#: field:translate.tasks,new_stage:0
+msgid "New stage to"
+msgstr "New stage to"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.invoice,order_reference_id:0
+msgid "Order reference"
+msgstr "Order reference"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.account,point_unit_price:0
+msgid "Point unit price"
+msgstr "Prezzo del punto"
+
+#. module: project_task_projectref_cogitoweb
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Points"
+msgstr "Punti"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,price:0
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Price"
+msgstr "Prezzo"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_project_project
+#: field:sale.order,real_project_id:0
+msgid "Project"
+msgstr "Progetti"
+
+#. module: project_task_projectref_cogitoweb
+#: code:addons/project_task_projectref_cogitoweb/wizard/translate_tasks.py:24
+#, python-format
+msgid "Project is mandatory"
+msgstr "Project is mandatory"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.task:project_task_projectref_cogitoweb.project_task_projectref_view_form
+#: field:project.task,project_ref_id:0
+msgid "Project reference"
+msgstr "Progetto di riferimento"
+
+#. module: project_task_projectref_cogitoweb
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Recalculation of prices will lead to a reset of all values to the cost multiplied by the markup. Do you want to proceed?"
+msgstr "Recalculation of prices will lead to a reset of all values to the cost multiplied by the markup. Do you want to proceed?"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.line.accrual,line_ref:0
+msgid "Ref."
+msgstr "Ref."
+
+#. module: project_task_projectref_cogitoweb
+#: field:sale.order,unrelated_task_ids:0
+#: field:sale.order.line,tasks_ids:0
+msgid "Related Tasks"
+msgstr "Task collegati"
+
+#. module: project_task_projectref_cogitoweb
+#: view:translate.tasks:project_task_projectref_cogitoweb.wizard_translate_tasks
+msgid "Reschedule Tasks"
+msgstr "Rischedula Tasks"
+
+#. module: project_task_projectref_cogitoweb
+#: field:account.analytic.account,sale_offer_markup:0
+#: field:sale.order,sale_offer_markup:0
+msgid "Sale offer markup"
+msgstr "Markup offerta"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,sale_order_id:0
+msgid "Sale order id"
+msgstr "Ordine di vendita"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Anticipo su fattura di vendita"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_sale_order
+msgid "Sales Order"
+msgstr "Ordine di vendita"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Riga ordine di vendita"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.actions.act_window,name:project_task_projectref_cogitoweb.project_form_schedule_tasks
+msgid "Schedule project tasks"
+msgstr "Schedula tasks"
+
+#. module: project_task_projectref_cogitoweb
+#: field:project.task,sale_order_state:0
+msgid "Status"
+msgstr "Stato"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.model,name:project_task_projectref_cogitoweb.model_project_task
+msgid "Task"
+msgstr "Attività"
+
+#. module: project_task_projectref_cogitoweb
+#: field:sale.order.line,tasks_count:0
+msgid "Tasks"
+msgstr "Tasks"
+
+#. module: project_task_projectref_cogitoweb
+#: view:account.analytic.line.accrual:project_task_projectref_cogitoweb.account_analytic_line_accrual_tree
+msgid "Total Line amount"
+msgstr "Total Line amount"
+
+#. module: project_task_projectref_cogitoweb
+#: view:account.analytic.line:project_task_projectref_cogitoweb.view_account_analytic_line_form_inherited
+#: view:account.analytic.line.accrual:project_task_projectref_cogitoweb.account_analytic_line_accrual_tree
+msgid "Total amount"
+msgstr "Total amount"
+
+#. module: project_task_projectref_cogitoweb
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Total cost"
+msgstr "Total cost"
+
+#. module: project_task_projectref_cogitoweb
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Total poins"
+msgstr "Total poins"
+
+#. module: project_task_projectref_cogitoweb
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Total price"
+msgstr "Total price"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.actions.act_window,name:project_task_projectref_cogitoweb.action_wizard_translate_tasks
+msgid "Translate Project Tasks Wizard"
+msgstr "Translate Project Tasks Wizard"
+
+#. module: project_task_projectref_cogitoweb
+#: view:project.task:project_task_projectref_cogitoweb.project_task_projectref_view_form
+msgid "True"
+msgstr "True"
+
+#. module: project_task_projectref_cogitoweb
+#: view:sale.order:project_task_projectref_cogitoweb.project_task_projectref_sale_order_form
+msgid "Unrelated Tasks"
+msgstr "Tasks non collegati"
+
+#. module: project_task_projectref_cogitoweb
+#: code:addons/project_task_projectref_cogitoweb/model/account_analytic_line.py:20
+#, python-format
+msgid "You cannot modify an invoiced analytic line!"
+msgstr "You cannot modify an invoiced analytic line!"
+
+#. module: project_task_projectref_cogitoweb
+#: view:account.analytic.line.accrual:project_task_projectref_cogitoweb.account_analytic_line_accrual_tree
+msgid "account analytic line accrual"
+msgstr "account analytic line accrual"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.actions.act_window,name:project_task_projectref_cogitoweb.account_analytic_line_accrual_action_tree
+msgid "account.analytic.line.accrual"
+msgstr "account.analytic.line.accrual"
+
+#. module: project_task_projectref_cogitoweb
+#: view:account.analytic.line.accrual:project_task_projectref_cogitoweb.account_analytic_line_accrual_form
+msgid "analytic line accrual"
+msgstr "analytic line accrual"
+
+#. module: project_task_projectref_cogitoweb
+#: model:ir.actions.server,name:project_task_projectref_cogitoweb.server_analytic_line_generate_accrual
+msgid "analytic_line_generate_accrual"
+msgstr "analytic_line_generate_accrual"
+
+#. module: project_task_projectref_cogitoweb
+#: view:account.move:project_task_projectref_cogitoweb.account_view_move_sorted_tree
+msgid "date desc"
+msgstr "date desc"
+
+#. module: project_task_projectref_cogitoweb
+#: view:account.invoice:project_task_projectref_cogitoweb.invoice_order_reference
+msgid "{'invisible':[('order_reference_id','!=',False)]}"
+msgstr "{'invisible':[('order_reference_id','!=',False)]}"
+

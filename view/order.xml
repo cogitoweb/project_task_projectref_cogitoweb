@@ -31,12 +31,13 @@
                         <field name="task_to_invoice_ids" context="{'default_sale_order_id':active_id,'default_billing_plan':True}">
                                 
                             <tree editable="bottom" default_order="invoice_date asc">
-                                <field name="invoice_date" required="True"/>
-                                <field name="invoice_amount" />
-                                <field name="milestone" />
+                                <field name="invoice_date" required="True" attrs="{'readonly': [('invoiced','=',True)]}" />
+                                <field name="invoice_amount" attrs="{'readonly': [('invoiced','=',True)]}" />
+                                <field name="milestone" attrs="{'readonly': [('invoiced','=',True)]}" />
                                 <field name="invoiced" readonly="True"/>
                                 <button name="ptr_call_repetition_wizard" type="object" string="RP" 
                                         attrs="{'invisible': ['|', ('create_date', '=', False), ('invoiced','=',True)]}"/>
+                                        
                                 <field name="billing_plan" invisible="True"/>
                                 <field name="sale_order_id" invisible="True"/>
                                 <field name="create_date" invisible="True"/>
