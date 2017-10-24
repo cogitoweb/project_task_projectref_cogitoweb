@@ -78,18 +78,19 @@
                 <xpath expr="//page[@string='Other Information']" position="after">
                 
                         <page string="Unrelated Tasks" attrs="{'invisible': [('project_id', '=', False)]}" >
-                            <field name="unrelated_task_ids" readonly="True">
+                            <field name="unrelated_task_ids" readonly="False" context="{'order_id':active_id}">
                             
-                                <tree>
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="id" />
-                                    <field name="name"/>
-                                    <field name="stage_id"/>
-                                    <field name="points" string="Points" sum="Total poins" />
-                                    <field name="price" string="Price" sum="Total price" />
-                                    <field name="cost" string="Cost" sum="Total cost" />
-                                    <field name="user_id" />
-                                    <field name="date_deadline" />
+                                <tree editable="bottom" create="false" delete="false">
+                                    <field name="id" readonly="True" />
+                                    <field name="name" readonly="True"/>
+                                    <field name="stage_id" readonly="True"/>
+                                    <field name="points" string="Points" sum="Total poins"  readonly="True" />
+                                    <field name="price" string="Price" sum="Total price" readonly="True" />
+                                    <field name="cost" string="Cost" sum="Total cost" readonly="True" />
+                                    <field name="user_id" readonly="True" />
+                                    <field name="date_deadline" readonly="True" />
+                                    <field name="sale_line_id" options="{'no_quick_create':True,'no_create_edit':True}"
+                                        domain="[('order_id', '=', context.get('order_id'))]" />
                                 </tree>
                             
                             </field>

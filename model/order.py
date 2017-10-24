@@ -20,6 +20,17 @@ class Order(models.Model):
     @api.multi
     def write(self,values):
 
+        if 'unrelated_task_ids' in values and len(self) == 1:
+            
+            for tt in values['unrelated_task_ids']:
+                for t in self.unrelated_task_ids:
+                    if(t.id == tt[1]):
+
+                        if(tt[2] and 'sale_line_id' in tt[2]):
+                            t.sale_line_id = tt[2]['sale_line_id']
+                        else:
+                            t.sale_line_id = False
+
         for o in self:
             if('state' in values and values['state'] == 'cancel'):
                 
