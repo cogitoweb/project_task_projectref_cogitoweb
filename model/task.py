@@ -2,7 +2,7 @@
 
 from openerp import models, fields, api, exceptions, tools
 from dateutil import parser
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 
 import pprint
 #Import logger
@@ -219,7 +219,11 @@ class Task(models.Model):
                 values['invoice_date'] = values['date_deadline']
 
             # nomi e date da ordine
-            values['name'] = 'Fatturazione del %s' % parser.parse(values['invoice_date']).strftime("%d/%m/%Y")
+            try:
+                values['name'] = 'Fatturazione del %s' % parser.parse(values['invoice_date']).strftime("%d/%m/%Y")
+            except:
+                values['name'] = 'Fatturazione del %s' % values['invoice_date'].strftime("%d/%m/%Y")
+
             ## stato da fatturare (5002)
             ## se milestone altrimenti specifica (2)
             values['stage_id'] = 2 if values['milestone'] else 5002
