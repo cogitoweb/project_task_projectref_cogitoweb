@@ -195,7 +195,7 @@ class Task(models.Model):
                     'task_id': t.id,
                 })
                 
-                t.write({'procurement_id': procurement_id})
+                t.write({'procurement_id': procurement_id.id})
             
         return res
 
