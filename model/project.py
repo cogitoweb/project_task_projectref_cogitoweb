@@ -32,6 +32,10 @@ class Project(models.Model):
     locked_points = fields.Integer(compute='compute_total_points', store=True)
     free_points = fields.Integer(compute='compute_total_points', store=True)
 
+    @api.model
+    def _needaction_domain_get(self):
+        return []
+
     @api.depends('tasks.points', 'tasks.stage_id')
     def compute_total_points(self):
         for record in self:
