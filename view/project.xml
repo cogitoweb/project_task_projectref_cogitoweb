@@ -19,7 +19,7 @@
   
 
                 <xpath expr="//group[@name='misc']" position="before">
-                    <group>
+                    <group groups="project.group_project_manager">
                         <button string="Reschedule Tasks" type="action" name="%(action_wizard_translate_tasks)d"
                                 attrs="{'invisible': [('state', 'in', ('cancelled', 'close')) ]}"  class="oe_highlight"/>
                     </group>
