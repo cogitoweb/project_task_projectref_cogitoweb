@@ -22,7 +22,7 @@
     'version': '2.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base_cogitoweb', 'account', 'sale_service'],
+    'depends': ['base_cogitoweb', 'account', 'sale_service', 'hr_contract', 'analytic_user_function', 'account_analytic_default'],
 
     # always loaded
     'data': [
