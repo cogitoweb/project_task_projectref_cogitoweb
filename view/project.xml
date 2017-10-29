@@ -16,8 +16,6 @@
                         </button>
                 </xpath>
   
-  
-
                 <xpath expr="//group[@name='misc']" position="before">
                     <group groups="project.group_project_manager">
                         <button string="Reschedule Tasks" type="action" name="%(action_wizard_translate_tasks)d"

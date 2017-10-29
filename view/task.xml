@@ -44,7 +44,7 @@
             <field name="partner_id" position="replace"></field>
 
             <xpath expr="//page[@string='Extra Info']" position="after">
-                <page string="Accounting">
+                <page string="Accounting" groups="base.group_sale_salesman">
 
                 <field name="an_acc_by_prj" invisible="True"></field>
                 <field name="an_acc_by_prj_ref" invisible="True" ></field>
