@@ -3,6 +3,8 @@ import invoice
 import issue
 import task
 import project
+import product_category
+import product_template
 import order
 import order_line
 import budget_line

@@ -26,6 +26,8 @@ _logger = logging.getLogger(__name__)
 class Project(models.Model): 
     
     _inherit = 'project.project'
+
+    product_category_id = fields.Many2one('product.category', string="Product Category")
     
     total_points = fields.Integer(compute='compute_total_points', store=True)
     used_points = fields.Integer(compute='compute_total_points', store=True)

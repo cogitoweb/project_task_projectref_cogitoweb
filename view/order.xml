@@ -71,7 +71,8 @@
                 
                 <xpath expr="//tree[@string='Sales Order Lines']/field[@name='tax_id']" position="before">
                 
-                        <field name="tasks_count"/>
+                        <field name="tasks_count" />
+                        <field name="project_id" />
                     
                 </xpath>
                 

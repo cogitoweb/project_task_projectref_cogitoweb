@@ -31,6 +31,8 @@
 
         'view/task.xml',
         'view/project.xml',
+        'view/product_category.xml',
+        'view/product_template.xml',
         'view/issue.xml',
         'view/invoice.xml',
         'view/order.xml',
