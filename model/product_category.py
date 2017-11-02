@@ -27,4 +27,4 @@ class ProductCategory(models.Model):
     
     _inherit = 'product.category'
     
-    line_manager_id = fields.Many2one('hr.employee', string="Line manager")
+    user_id = fields.Many2one('res.user', string="Line manager")

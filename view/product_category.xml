@@ -12,7 +12,7 @@
 
             <xpath expr="//group[@name='parent']" position="inside">
                 <group string="Project Management" colspan="2">
-                    <field name="line_manager_id" />
+                    <field name="user_id" domain="[('groups_id.id', '=', %(base.group_user)d)]" />
                 </group>
             </xpath>
             
