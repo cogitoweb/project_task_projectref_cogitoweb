@@ -87,12 +87,6 @@ class Task(models.Model):
 
                 t.price = price  
 
-    @api.onchange('sale_line_id')
-    def onchange_sale_line_id(self):
-
-        self.sale_order_id = self.sale_line_id.order_id
-
-
     def _default_invoice_date_cache(self):
         
         if('budget_line_cache_invoice_date' in self.cache):
