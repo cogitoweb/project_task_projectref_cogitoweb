@@ -61,7 +61,13 @@ class Order(models.Model):
                 t.compute_price()
                 line_cost = t.cost + line_cost
 
-            l.purchase_price = line_cost
-            l.price_unit = line_cost * self.sale_offer_markup
+            update = {
+                "purchase_price": line_cost,
+                "price_unit": line_cost * self.sale_offer_markup if not l.fixed_price else l.price_unit
+            }
+
+            _logger.info(pprint.pformat(update))
+
+            l.write(update)
             
 

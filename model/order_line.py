@@ -10,6 +10,7 @@ class OrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     project_id = fields.Many2one('project.project', string="Related Project")
+    fixed_price = fields.Boolean(default=False)
     tasks_ids = fields.One2many('project.task', string="Related Tasks", compute="compute_tasks_ids")
     tasks_count = fields.Integer(compute="compute_tasks_ids", string="Tasks")
     
