@@ -57,7 +57,7 @@ class Task(models.Model):
             t.cost = cost 
 
             
-    @api.depends('sale_line_id', 'sale_line_id.price_unit', 'points')
+    @api.depends('sale_line_id', 'cost', 'points')
     def compute_price(self):
         
         for t in self:
@@ -74,11 +74,10 @@ class Task(models.Model):
                 row_price = 0
                 price = 0
 
-                if(t.sudo().sale_line_id.id):
+                if(t.sudo().sale_line_id.id and isinstance(t.sudo().sale_line_id.id, (int, long))):
                     
                     row_price = t.sale_line_id.price_unit * t.sale_line_id.product_uom_qty
-                    self._cr.execute("select sum(cost) from project_task where sale_line_id = %s and stage_id <> 8" %
-                                            str(t.sale_line_id.id))
+                    self._cr.execute("select sum(cost) from project_task where sale_line_id = %s and stage_id <> 8" % t.sudo().sale_line_id.id)
                     r = self._cr.fetchone()
                     total_cost = float(r[0]) if len(r) and r[0] else 0
 
@@ -118,6 +117,7 @@ class Task(models.Model):
     ms_project_data = fields.Text()
 
     ## override sale service
+    procurement_id = fields.Many2one(ondelete=False)
     sale_line_id = fields.Many2one('sale.order.line')
 
     sale_order_id = fields.Many2one('sale.order')
@@ -169,32 +169,19 @@ class Task(models.Model):
 
         values = self.populate_billing_task(values, 'write')
 
+        _logger.info(pprint.pformat(values))
+
+	if('sale_line_id' in values and not values['sale_line_id']):
+            _logger.info("skip update")
+            return
+
         """ When populating sale_line_id DO NOT create procurment """
         res = super(Task, self).write(values)
-        
-        '''
-        for t in self:
-            if values.get('sale_line_id') and t and (t.procurement_id.id == False):
-                
-                sale_order_line = self.env['sale.order.line'].browse([values.get('sale_line_id')])
 
-                procurement_id = self.env['procurement'].create({
-                    'origin': '%s' % ('AUTO PR FROM ' + t.name),
-                    'product_uom': sale_order_line.product_uom.id,
-                    'product_uos_qty': sale_order_line.product_uos_qty,
-                    'product_uom_qty': sale_order_line.product_uos_qty,
-                    'product_uos': sale_order_line.product_uos.id,
-                    'company_id': sale_order_line.company_id.id,
-                    'product_qty': 1,
-                    'name': '%s' % ('PR FROM ' + t.name),
-                    'product_id': sale_order_line.product_id.id,
-                    'date_planned': t.date_deadline or fields.Date.today(),
-                    'sale_line_id': sale_order_line.id,
-                    'task_id': t.id,
-                })
-                
-                t.write({'procurement_id': procurement_id.id})
-        '''
+        for t in self:
+            if values.get('sale_line_id'):
+               self._cr.execute("update project_task set sale_line_id = %s where id = %s" % (values.get('sale_line_id'), t.id))
+               _logger.info("update project_task set sale_line_id = %s where id = %s" % (values.get('sale_line_id'), t.id))
 
         return res
 

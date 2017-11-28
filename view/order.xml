@@ -19,6 +19,7 @@
                 
                 <field name="project_id" position="after">
                     <field name="real_project_id" />
+                    <field name="incipit" />"
                 </field>
                 
                 <field name="pricelist_id" position="after">

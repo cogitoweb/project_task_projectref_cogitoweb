@@ -8,6 +8,8 @@ _logger = logging.getLogger(__name__)
 class Order(models.Model):
 
     _inherit = 'sale.order'
+
+    incipit = fields.Text()
     
     sale_offer_markup = fields.Float(related='project_id.sale_offer_markup', readonly=True)
     real_project_id = fields.Many2one('project.project', string="Project", related="project_id.project_id", readonly=True)
@@ -21,7 +23,7 @@ class Order(models.Model):
     def write(self,values):
 
         if 'unrelated_task_ids' in values and len(self) == 1:
-            
+
             for tt in values['unrelated_task_ids']:
                 for t in self.unrelated_task_ids:
                     if(t.id == tt[1]):
