@@ -61,6 +61,9 @@ class Order(models.Model):
                 t.compute_price()
                 line_cost = t.cost + line_cost
 
+            if not l.sudo().tasks_ids:
+                line_cost = l.purchase_price
+
             update = {
                 "purchase_price": line_cost,
                 "price_unit": line_cost * self.sale_offer_markup if not l.fixed_price else l.price_unit
