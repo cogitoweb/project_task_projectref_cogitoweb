@@ -69,8 +69,6 @@ class Order(models.Model):
                 "price_unit": line_cost * self.sale_offer_markup if not l.fixed_price else l.price_unit
             }
 
-            _logger.info(pprint.pformat(update))
-
             l.write(update)
             
 

@@ -117,6 +117,9 @@ class Task(models.Model):
     effective_cost = fields.Float(required=True, default=0, readonly=True, store=True)
     ms_project_data = fields.Text()
 
+    ## override sale service
+    sale_line_id = fields.Many2one('sale.order.line')
+
     sale_order_id = fields.Many2one('sale.order')
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
@@ -166,15 +169,16 @@ class Task(models.Model):
 
         values = self.populate_billing_task(values, 'write')
 
-        """ When populating sale_line_id create procurment """
+        """ When populating sale_line_id DO NOT create procurment """
         res = super(Task, self).write(values)
         
+        '''
         for t in self:
             if values.get('sale_line_id') and t and (t.procurement_id.id == False):
                 
                 sale_order_line = self.env['sale.order.line'].browse([values.get('sale_line_id')])
 
-                procurement_id = self.env['procurement.order'].create({
+                procurement_id = self.env['procurement'].create({
                     'origin': '%s' % ('AUTO PR FROM ' + t.name),
                     'product_uom': sale_order_line.product_uom.id,
                     'product_uos_qty': sale_order_line.product_uos_qty,
@@ -190,7 +194,8 @@ class Task(models.Model):
                 })
                 
                 t.write({'procurement_id': procurement_id.id})
-            
+        '''
+
         return res
 
     
