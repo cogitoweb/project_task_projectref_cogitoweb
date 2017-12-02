@@ -97,7 +97,7 @@
                                     <field name="cost" string="Cost" sum="Total cost" readonly="True" />
                                     <field name="user_id" readonly="True" />
                                     <field name="date_deadline" readonly="True" />
-                                    <field name="sale_line_id" options="{'no_quick_create':True,'no_create_edit':True}"
+                                    <field name="direct_sale_line_id" options="{'no_quick_create':True,'no_create_edit':True}"
                                         domain="[('order_id', '=', context.get('order_id'))]" />
                                 </tree>
                             

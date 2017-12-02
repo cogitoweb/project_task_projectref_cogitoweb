@@ -1,130 +1,159 @@
 # -*- coding: utf-8 -*-
+""" override task """
 
-from openerp import models, fields, api, exceptions, tools
+import pprint
+import logging
 from dateutil import parser
 from datetime import datetime, date, timedelta
 
-import pprint
-#Import logger
-import logging
-#Get the logger
+from openerp import models, fields, api, exceptions, tools
 _logger = logging.getLogger(__name__)
 
 class Task(models.Model):
+    """ override task """
 
     _inherit = 'project.task'
+    _stage_id_fatturazione = 5002
+    _stage_id_specifica = 2
+    _stage_id_annullo = 8
+    _stage_id_done = 7
 
     @api.model
     def _needaction_domain_get(self):
+        """ _needaction_domain_get remove unused counter on menu """
         return []
 
     @api.depends('sale_order_state', 'invoiced', 'stage_id')
     def compute_can_be_invoiced(self):
-
+        """ compute_can_be_invoiced """
         for t in self:
-            t.can_be_invoiced = (t.sale_order_state == 'manual' and (t.invoiced == True or t.stage_id not in [5002]))
-
+            t.can_be_invoiced = (t.sale_order_state == 'manual' and
+                                 (t.invoiced == True or t.stage_id not in [self._stage_id_fatturazione]))
 
     @api.depends('milestone', 'project_id', 'project_ref_id')
     def compute_billing_project(self):
-        
-        # ricava il costo orario dal contratto
-        for t in self:
-            
-            if(t.milestone):
-                t.billing_project = t.project_id
+        """ ricava il progetto di riferimento per la fatturazione """
+        for task in self:
+            if task.milestone:
+                task.billing_project = task.project_id
             else:
-                t.billing_project = t.project_ref_id
+                task.project_ref_id
 
     def search_billing_project(self, operator, value):
+        """ search_billing_project """
         if operator == 'like':
             operator = 'ilike'
-        return ['|', ('project_ref_id.name', operator, value),('project_id.name', operator, value)]
-    
+        return [
+            '|',
+            ('project_ref_id.name', operator, value),
+            ('project_id.name', operator, value)
+            ]
+
     @api.depends('planned_hours', 'user_id')
     def compute_cost(self):
-        
-        # ricava il costo orario dal contratto
-        for t in self:
-            resource = self.env['resource.resource'].sudo().search([('user_id','=',t.user_id.id)])
-            employee = self.env['hr.employee'].sudo().search([('resource_id','=',resource.id)])
+        """ ricava il costo orario dal contratto  """
+        for task in self:
+            resource = self.env['resource.resource'].sudo().search(
+                [
+                    ('user_id', '=', task.user_id.id)
+                ]
+            )
+            employee = self.env['hr.employee'].sudo().search(
+                [
+                    ('resource_id', '=', resource.id)
+                ]
+            )
             cost = 0
 
-            if(resource and employee and employee.contract_id):
+            if resource and employee and employee.contract_id:
                 hour_cost = employee.contract_id.wage
-                cost = hour_cost * t.planned_hours
+                cost = hour_cost * task.planned_hours
 
-            t.cost = cost 
+            task.cost = cost
 
-            
-    @api.depends('sale_line_id', 'cost', 'points')
+    @api.depends('direct_sale_line_id', 'direct_sale_line_id.price_unit', 'cost', 'points')
     def compute_price(self):
-        
-        for t in self:
-            
-            #
-            ## based on points
-            #
-            if(t.points):
-                t.price = t.an_acc_by_prj.point_unit_price * t.points
-            #
-            ## base on sale offer
-            #
+        """ ricalcola il prezzo basato sui punti o sulla riga di offerta  """
+        for task in self.sudo():
+            if task.points:
+                """
+                ## based on points
+                """
+                task.price = task.an_acc_by_prj.point_unit_price * task.points
             else:
+                """
+                    ## base on sale offer
+                """
                 row_price = 0
                 price = 0
 
-                if(t.sudo().sale_line_id.id and isinstance(t.sudo().sale_line_id.id, (int, long))):
-                    
-                    row_price = t.sale_line_id.price_unit * t.sale_line_id.product_uom_qty
-                    self._cr.execute("select sum(cost) from project_task where sale_line_id = %s and stage_id <> 8" % t.sudo().sale_line_id.id)
-                    r = self._cr.fetchone()
-                    total_cost = float(r[0]) if len(r) and r[0] else 0
+                if(task.direct_sale_line_id and
+                   isinstance(task.direct_sale_line_id.id, (int, long))):
 
-                    if(total_cost):
-                        price = (t.cost/total_cost) * row_price
+                    line = task.direct_sale_line_id
 
-                t.price = price  
+                    row_price = line.price_unit * line.product_uom_qty
+                    self._cr.execute("select sum(cost), count(id) from project_task "
+                                     " where direct_sale_line_id = %s and stage_id <> %s" %
+                                     (line.id, self._stage_id_annullo))
+                    record = self._cr.fetchone()
+
+                    _logger.info(pprint.pformat(record))
+
+                    """ costo calcolato in proporzione al prezzo dei task
+                    o in proporzione al loro numero se il prezzo totale è 0 """
+                    cost_factor = task.cost/float(record[0]) if record[0] else 1/float(record[1])
+
+                    _logger.info("recalc cost/price %s" % cost_factor)
+
+                    price = cost_factor * row_price
+
+                task.price = price
 
     def _default_invoice_date_cache(self):
-        
-        if('budget_line_cache_invoice_date' in self.cache):
+        if 'budget_line_cache_invoice_date' in self.cache:
             return self.cache['budget_line_cache_invoice_date']
-            
         return False
-    
+
     def _default_planned_amount_cache(self):
-        
-        if('budget_line_cache_planned_amount' in self.cache):
+        if 'budget_line_cache_planned_amount' in self.cache:
             return self.cache['budget_line_cache_planned_amount']
-            
         return False
 
-    ####        
-    ####  FIELDS        
-    ####        
-
+    """
+        ####        
+        ####  FIELDS        
+        ####        
+    """
     points = fields.Integer(string='Points')
     project_ref_id = fields.Many2one('project.project', 'Project reference')
-    an_acc_by_prj = fields.Many2one('account.analytic.account', string="Contract/Analytic",
-                                                     related='project_id.analytic_account_id',readonly=True)
-    an_acc_by_prj_ref = fields.Many2one('account.analytic.account', string="Contract/Analytic reference",
-                                                         related='project_ref_id.analytic_account_id',readonly=True)
-    
-    price = fields.Float(required=True, default=0, readonly=True, compute=compute_price, store=True, compute_sudo=True)
+    an_acc_by_prj = fields.Many2one('account.analytic.account',
+                                    string="Contract/Analytic",
+                                    related='project_id.analytic_account_id',
+                                    readonly=True
+                                   )
+    an_acc_by_prj_ref = fields.Many2one('account.analytic.account',
+                                        string="Contract/Analytic reference",
+                                        related='project_ref_id.analytic_account_id',
+                                        readonly=True
+                                       )
+    price = fields.Float(required=True, default=0, readonly=True,
+                         compute=compute_price,
+                         store=True,
+                         compute_sudo=True
+                        )
     cost = fields.Float(required=True, default=0, readonly=True, compute=compute_cost, store=True, compute_sudo=True)
     effective_cost = fields.Float(required=True, default=0, readonly=True, store=True)
     ms_project_data = fields.Text()
 
-    ## override sale service
-    procurement_id = fields.Many2one(ondelete=False)
-    sale_line_id = fields.Many2one('sale.order.line')
-
+    direct_sale_line_id = fields.Many2one('sale.order.line')
     sale_order_id = fields.Many2one('sale.order')
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
     billing_plan = fields.Boolean(defaut=False)
-    billing_project = fields.Many2one('project.project', compute=compute_billing_project, search=search_billing_project)
+    billing_project = fields.Many2one('project.project',
+                                      compute=compute_billing_project,
+                                      search=search_billing_project)
     can_be_invoiced = fields.Boolean(compute=compute_can_be_invoiced)
     invoiced = fields.Boolean(defaut=False)
     milestone = fields.Boolean(defaut=False)
@@ -133,27 +162,27 @@ class Task(models.Model):
 
     @api.multi
     def markinvoiced(self):
-        
+
         self.ensure_one()  
         self.invoiced = True
-        self.stage_id = 8
+        self.stage_id = self._stage_id_done
 
     @api.multi
     def marktoinvoice(self):
-        
+
         self.ensure_one()  
         self.invoiced = False
-        self.stage_id = 5002
-    
+        self.stage_id = self._stage_id_fatturazione
+
     @api.multi
     def invoice(self):
-        
-        self.ensure_one()  
+
+        self.ensure_one()
         self.invoiced = True
-        self.stage_id = 7
-        
+        self.stage_id = self._stage_id_done
+
         view_id = self.env['ir.model.data'].get_object_reference('sale', 'view_sale_advance_payment_inv')[1]
-        
+
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'sale.advance.payment.inv',
@@ -163,39 +192,27 @@ class Task(models.Model):
             'target': 'new',
             'context': {'active_ids': [self.sale_order_id.id], 'active_model':'sale.order'}
         }
-        
+
     @api.multi
     def write(self,values):
-
+        """ override write """
         values = self.populate_billing_task(values, 'write')
 
-        _logger.info(pprint.pformat(values))
-
-	if('sale_line_id' in values and not values['sale_line_id']):
-            _logger.info("skip update")
-            return
-
-        """ When populating sale_line_id DO NOT create procurment """
+        """ DO NOT create procurment """
         res = super(Task, self).write(values)
-
-        for t in self:
-            if values.get('sale_line_id'):
-               self._cr.execute("update project_task set sale_line_id = %s where id = %s" % (values.get('sale_line_id'), t.id))
-               _logger.info("update project_task set sale_line_id = %s where id = %s" % (values.get('sale_line_id'), t.id))
 
         return res
 
-    
     @api.model
-    def create(self,values):
-
+    def create(self, values):
+        """ override create """
         values = self.populate_billing_task(values, 'create')
 
         return super(Task, self).create(values)
 
-    # gestione per righe di fatturazione
-    # nel caso di creazione task da ordine 
     def populate_billing_task(self, values, mode):
+        """ gestione per righe di fatturazione
+            nel caso di creazione task da ordine  """
 
         if('billing_plan' in values and values['billing_plan']):
 
@@ -212,7 +229,7 @@ class Task(models.Model):
 
             ## stato da fatturare (5002)
             ## se milestone altrimenti specifica (2)
-            values['stage_id'] = 2 if values['milestone'] else 5002
+            values['stage_id'] = self._stage_id_specifica if values['milestone'] else self._stage_id_fatturazione
 
             values['date_start'] = values['invoice_date']
             values['date_end'] = values['invoice_date']
@@ -233,31 +250,31 @@ class Task(models.Model):
                 values['project_ref_id'] = order.real_project_id.id
 
         return values
-    
-    # fix defect on date_deadline setup
-    # and date gant copy on date_ends
+
     def onchange_date_deadline(
             self, cr, uid, ids, date_end, date_deadline, context=None):
-        
+        """ fix defect on date_deadline setup
+            and date gant copy on date_ends """
+
         if not date_end or (date_end[:10] == self.browse(cr, uid, ids, context=context).date_deadline):
-            
+
             # set hour at the end of the day but not too close to midnight
             date_end = date_deadline + ' 19:00:00' if date_deadline else False   
-            
+
         # retrieve possible date start from db
         date_start = self.browse(cr, uid, ids, context=context).date_start
-        
+
         # if date_end is set
         # and date start is not set so that odoo fills the field with now
         # or the db value is > than date_end
         if(date_end and ((not date_start and parser.parse(date_end) < datetime.now()) 
                             or (date_start and parser.parse(date_start) > parser.parse(date_end)))):
             date_start = parser.parse(date_end) - timedelta(hours=1)
-            
+
         # conditional output
         out = {'date_end': date_end}
-        
+
         if(date_start):
             out['date_start'] = date_start
-        
+
         return {'value': out}
