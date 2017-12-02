@@ -93,7 +93,7 @@ class Task(models.Model):
                     line = task.direct_sale_line_id
 
                     row_price = line.price_unit * line.product_uom_qty
-                    self._cr.execute("select sum(cost), count(id) from project_task "
+                    self._cr.execute("select sum(cost), case when count(id) > 0 then count(id) else 1 end  from project_task "
                                      " where direct_sale_line_id = %s and stage_id <> %s" %
                                      (line.id, self._stage_id_annullo))
                     record = self._cr.fetchone()
