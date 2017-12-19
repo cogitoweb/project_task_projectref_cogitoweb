@@ -37,7 +37,7 @@ class Task(models.Model):
             if task.milestone:
                 task.billing_project = task.project_id
             else:
-                task.project_ref_id
+                task.billing_project = task.project_ref_id
 
     def search_billing_project(self, operator, value):
         """ search_billing_project """
