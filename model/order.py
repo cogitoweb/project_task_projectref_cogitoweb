@@ -19,6 +19,7 @@ class Order(models.Model):
     unrelated_task_ids = fields.One2many('project.task', string="Related Tasks",
                                          compute="compute_unrelated_task_ids")
     task_to_invoice_ids = fields.One2many('project.task', 'sale_order_id', string="Billing plan")
+    show_total = fields.Boolean(default=True)
 
     @api.multi
     def write(self, values):
