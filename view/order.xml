@@ -19,6 +19,7 @@
                 
                 <field name="project_id" position="after">
                     <field name="real_project_id" />
+                    <field name="show_total" />
                     <field name="incipit" />"
                 </field>
                 
