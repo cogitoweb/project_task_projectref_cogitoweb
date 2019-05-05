@@ -28,7 +28,7 @@ class Task(models.Model):
         """ compute_can_be_invoiced """
         for t in self:
             t.can_be_invoiced = (t.sale_order_state == 'manual' and
-                                 (t.invoiced == True or t.stage_id not in [self._stage_id_fatturazione]))
+                                 (t.invoiced == True or not t.stage_id or t.stage_id.id not in [self._stage_id_fatturazione]))
 
     @api.depends('milestone', 'project_id', 'project_ref_id')
     def compute_billing_project(self):
