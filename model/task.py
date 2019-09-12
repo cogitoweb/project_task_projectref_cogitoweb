@@ -147,6 +147,7 @@ class Task(models.Model):
     ms_project_data = fields.Text()
 
     direct_sale_line_id = fields.Many2one('sale.order.line')
+    product_id = fields.Many2one('product.product')
     sale_order_id = fields.Many2one('sale.order')
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
@@ -197,6 +198,20 @@ class Task(models.Model):
     def write(self,values):
         """ override write """
         values = self.populate_billing_task(values, 'write')
+
+        ### auto set product if direct_sale_line_id
+        if 'direct_sale_line_id' in values:
+
+            product_id = False
+            if values['direct_sale_line_id']:
+                product = self.env['sale.order.line'].sudo().browse(
+                            values['direct_sale_line_id']
+                        ).product_id
+
+                product_id = product_id.id if product_id else False
+
+            values['product_id'] = product_id
+        # end auto set product
 
         """ DO NOT create procurment """
         res = super(Task, self).write(values)
