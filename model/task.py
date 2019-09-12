@@ -210,7 +210,7 @@ class Task(models.Model):
 
                 product_id = product_id.id if product_id else False
 
-            values['product_id'] = product_id
+                values['product_id'] = product_id
         # end auto set product
 
         """ DO NOT create procurment """
