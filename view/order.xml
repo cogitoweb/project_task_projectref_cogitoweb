@@ -25,11 +25,14 @@
                 
                 <field name="pricelist_id" position="after">
                     <field name="sale_offer_markup" />
+                    <field name="point_unit_price" />
+                    <field name="pre_paid" />
+                    <field name="custom_invoicing_plan" />
                 </field>
 
                 <xpath expr="//page[@string='Other Information']" position="before">
                     
-                    <page string="Billing plan" attrs="{'invisible': [('project_id', '=', False)]}" >
+                    <page string="Billing plan" attrs="{'invisible': ['|', ('project_id', '=', False), ('custom_invoicing_plan', '=', False)]}" >
                         <field name="task_to_invoice_ids" context="{'default_sale_order_id':active_id,'default_billing_plan':True}">
                                 
                             <tree editable="bottom" default_order="invoice_date asc">

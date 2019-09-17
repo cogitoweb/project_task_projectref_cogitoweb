@@ -17,4 +17,14 @@ class AccountAnalyticAccount(models.Model):
     
     sale_offer_markup = fields.Float(default=_default_internal_sale_offer_markup)
 
-    point_unit_price = fields.Float(default=_default_internal_point_unit_price)
+    point_unit_price = fields.Float(
+        default=_default_internal_point_unit_price
+    )
+
+    pre_paid = fields.Boolean(
+        default=False
+    )
+
+    custom_invoicing_plan = fields.Boolean(
+        default=False
+    )

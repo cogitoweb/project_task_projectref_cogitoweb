@@ -161,6 +161,10 @@ class Task(models.Model):
     invoice_date = fields.Date()
     invoice_amount = fields.Float()
 
+    invoice_id = fields.Many2one(
+        'account.invoice'
+    )
+
     @api.multi
     def markinvoiced(self):
 
@@ -212,6 +216,12 @@ class Task(models.Model):
 
                 values['product_id'] = product_id
         # end auto set product
+
+        ### set auto invoiced
+        if 'invoice_id' in values:
+
+            values['invoiced'] = True if values['invoice_id'] else False
+        # end auto invoiced
 
         """ DO NOT create procurment """
         res = super(Task, self).write(values)

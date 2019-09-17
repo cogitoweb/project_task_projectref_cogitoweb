@@ -13,7 +13,11 @@ class Order(models.Model):
     _inherit = 'sale.order'
 
     incipit = fields.Text()
-    sale_offer_markup = fields.Float(related='project_id.sale_offer_markup', readonly=True)
+    sale_offer_markup = fields.Float(related='project_id.sale_offer_markup')
+    point_unit_price = fields.Float(related='project_id.point_unit_price')
+    pre_paid = fields.Boolean(related='project_id.pre_paid')
+    custom_invoicing_plan = fields.Boolean(related='project_id.custom_invoicing_plan')
+
     real_project_id = fields.Many2one('project.project', string="Project",
                                       related="project_id.project_id", readonly=True)
     unrelated_task_ids = fields.One2many('project.task', string="Related Tasks",
