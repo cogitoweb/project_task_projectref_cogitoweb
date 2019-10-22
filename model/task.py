@@ -206,7 +206,6 @@ class Task(models.Model):
             product_id = False
             if values['direct_sale_line_id']:
 
-                _logger.info('direct_sale_line_id IS %s' % (values['direct_sale_line_id']))
                 line = self.env['sale.order.line'].sudo().browse(
                             values['direct_sale_line_id']
                         )
@@ -217,8 +216,6 @@ class Task(models.Model):
                 product_id = line.product_id.id if line.product_id else False
 
                 values['product_id'] = product_id
-
-        _logger.info('direct_sale_line_id %s %s' % (values['direct_sale_line_id'], values['product_id']))
 
         # end auto set product
 
