@@ -198,23 +198,28 @@ class Task(models.Model):
             'context': {'active_ids': [self.sale_order_id.id], 'active_model':'sale.order'}
         }
 
-    @api.multi
-    def write(self,values):
-        """ override write """
-        values = self.populate_billing_task(values, 'write')
+    def _auto_set_product(self, values):
 
-        ### auto set product if direct_sale_line_id
+       ### auto set product if direct_sale_line_id
         if 'direct_sale_line_id' in values:
 
             product_id = False
             if values['direct_sale_line_id']:
-                product = self.env['sale.order.line'].sudo().browse(
-                            values['direct_sale_line_id']
-                        ).product_id
 
-                product_id = product_id.id if product_id else False
+                _logger.info('direct_sale_line_id IS %s' % (values['direct_sale_line_id']))
+                line = self.env['sale.order.line'].sudo().browse(
+                            values['direct_sale_line_id']
+                        )
+
+                _logger.info("line IS %s" % line)
+                _logger.info("product line IS %s" % line.product_id)
+
+                product_id = line.product_id.id if line.product_id else False
 
                 values['product_id'] = product_id
+
+        _logger.info('direct_sale_line_id %s %s' % (values['direct_sale_line_id'], values['product_id']))
+
         # end auto set product
 
         ### set auto invoiced
@@ -222,6 +227,15 @@ class Task(models.Model):
 
             values['invoiced'] = True if values['invoice_id'] else False
         # end auto invoiced
+
+        return values
+
+    @api.multi
+    def write(self,values):
+        """ override write """
+        values = self.populate_billing_task(values, 'write')
+
+        values = self._auto_set_product(values)
 
         """ DO NOT create procurment """
         res = super(Task, self).write(values)
@@ -232,6 +246,8 @@ class Task(models.Model):
     def create(self, values):
         """ override create """
         values = self.populate_billing_task(values, 'create')
+
+        values = self._auto_set_product(values)
 
         return super(Task, self).create(values)
 
