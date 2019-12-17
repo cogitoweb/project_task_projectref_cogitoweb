@@ -7,17 +7,32 @@
          <field name = "inherit_id" ref="analytic.view_account_analytic_account_form"></field>
          <field name="arch" type="xml">
 
-	    <xpath expr="//field[@name='company_id']" position="after">
-                <field name="sale_offer_markup"/>
-                <field name="point_unit_price"/>
-                <field name="pre_paid"/>
-                <field name="custom_invoicing_plan"/>
-		          <field name="project_id" readonly="True"/>
-	    </xpath>
+		<xpath expr="//field[@name='company_id']" position="after">
+			<field name="sale_offer_markup"/>
+			<field name="point_unit_price"/>
+			<field name="pre_paid"/>
+			<field name="custom_invoicing_plan"/>
+			<field name="project_id" readonly="True"/>
+		</xpath>
+		 
+		 
 		<field name="parent_id" position="attributes">
 			<attribute name="domain">[('state', '=', 'open'), ('type', '=', 'view')]</attribute>
 			<attribute name="on_change"></attribute>
 		</field>
+		 
+		 <notebook position="inside">
+                    <page string="Sale orders" groups="account.group_account_user">
+			    <field name="sale_order_ids" widget="one2many_list" colspan="4" nolabel="1" mode="tree">
+				<tree string="Sale orders">
+				    <field name="name"/>
+				    <field name="date_order"/>
+				    <field name="commitment_date"/>
+				    <field name="amount_untaxed"/>
+				</tree>
+			    </field>
+                    </page>
+                </notebook>
 
         </field>
       </record>
