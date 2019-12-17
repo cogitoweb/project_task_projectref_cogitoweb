@@ -17,8 +17,9 @@
             </field>
 -->
 		
-		<field name="analytic_account_id" position="after">
+		<field name="partner_id" position="after">
                     <field name="account_type" />
+		    <newline/>
                 </field>
 		
             <xpath expr="//button[@name='attachment_tree_view']" position="before">
