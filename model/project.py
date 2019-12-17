@@ -28,6 +28,7 @@ class Project(models.Model):
     _inherit = 'project.project'
 
     product_category_id = fields.Many2one('product.category', string="Product Category")
+    account_type = fields.Selection(related='analytic_account_id.account_type', store=True)
     
     total_points = fields.Integer(compute='compute_total_points', store=True)
     used_points = fields.Integer(compute='compute_total_points', store=True)
