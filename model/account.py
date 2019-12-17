@@ -28,3 +28,7 @@ class AccountAnalyticAccount(models.Model):
     custom_invoicing_plan = fields.Boolean(
         default=False
     )
+    
+    sale_order_ids = fields.One2many(
+        'sale.order', 'project_id', string="Related Sale Orders"
+    )
