@@ -54,6 +54,21 @@
 
         </field>
     </record>
+	   
+	  
+    <record model="ir.ui.view" id="view_project_search">
+         <field name="name">view_project_search</field>
+         <field name="model">project.project</field>
+         <field name="priority">60</field>
+         <field name="inherit_id" ref="project.view_project_project_filter"></field>
+         <field name="arch" type="xml">
+	   
+	   <xpath expr="//filter[@name='Parent']" position="after">
+	   	<filter string="Account type" name="account_type" help="Account type" context="{'group_by':'account_type'}"/>
+	   </xpath>
+		 
+   	</field>
+     </record>
 
    </data>
 </openerp>
