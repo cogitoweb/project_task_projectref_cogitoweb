@@ -31,6 +31,23 @@
             
         </field>
     </record>
+	   
+	   <!-- expose account_type -->
+    <record id="view_account_type" model="ir.ui.view">
+        <field name="name">project.project.tree</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="priority">60</field>
+
+        <field name="arch" type="xml">
+
+
+                <field name="name" position="after">
+                    <field name="account_type" />
+                </field>
+
+        </field>
+    </record>
 
    </data>
 </openerp>
