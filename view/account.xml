@@ -37,5 +37,11 @@
 
         </field>
       </record>
+
+      <!-- disable view for performance reason -->
+      <record id="account_analytic_analysis.view_account_analytic_account_tree_c2c_3" model="ir.ui.view">
+            <field name="active">0</field>
+      </record>
+
    </data>
 </openerp>
