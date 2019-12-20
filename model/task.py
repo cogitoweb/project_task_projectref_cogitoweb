@@ -198,6 +198,8 @@ class Task(models.Model):
             'context': {'active_ids': [self.sale_order_id.id], 'active_model':'sale.order'}
         }
 
+    # imposta prodotto ed offerta
+    # se direct_sale_line_id popolato
     def _auto_set_product(self, values):
 
        ### auto set product if direct_sale_line_id
@@ -216,6 +218,7 @@ class Task(models.Model):
                 product_id = line.product_id.id if line.product_id else False
 
                 values['product_id'] = product_id
+                values['sale_order_id'] = line.order_id.id
 
         # end auto set product
 
