@@ -55,7 +55,7 @@
                             <field name="partner_id" />
                             <field name="direct_sale_line_id" options="{'no_quick_create':True,'no_create_edit':True}"
                             domain="['&amp;', ('order_id.project_id', '!=', False), '|', ('order_id.project_id', '=', an_acc_by_prj_ref), ('order_id.project_id', '=', an_acc_by_prj)]" />
-                            <field name="sale_order_id" />
+                            <field name="sale_order_id" readonly="True" />
                             <field name="product_id" attrs="{'readonly': [('direct_sale_line_id', '!=', False)]}" />
                         </group>
                         <group>
