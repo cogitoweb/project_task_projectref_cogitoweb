@@ -69,7 +69,7 @@
                             <field name="milestone" />
                             <field name="invoiced" />
                             <field name="can_be_invoiced" invisible="True" />
-                            <field name="invoice_id" />
+                            <field name="invoice_id" readonly="True" />
                             <button name="marktoinvoice" string="Imposta 'da fatturare'" type="object" attrs="{'invisible':[('can_be_invoiced', '!=', True)]}" />
                         </group>
                         <group>
