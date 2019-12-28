@@ -202,7 +202,7 @@ class Task(models.Model):
     # se direct_sale_line_id popolato
     def _auto_set_product(self, values):
 
-       ### auto set product if direct_sale_line_id
+        ### auto set product if direct_sale_line_id
         if 'direct_sale_line_id' in values:
 
             product_id = False
@@ -221,6 +221,12 @@ class Task(models.Model):
                 values['sale_order_id'] = line.order_id.id
 
         # end auto set product
+
+        ### set auto invoiced
+        if 'invoice_id' in values:
+
+            values['invoiced'] = True if values['invoice_id'] else False
+        # end auto invoiced
 
         return values
 
