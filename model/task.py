@@ -222,12 +222,6 @@ class Task(models.Model):
 
         # end auto set product
 
-        ### set auto invoiced
-        if 'invoice_id' in values:
-
-            values['invoiced'] = True if values['invoice_id'] else False
-        # end auto invoiced
-
         return values
 
     @api.multi
