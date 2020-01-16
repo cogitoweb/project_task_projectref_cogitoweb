@@ -146,11 +146,12 @@
                     <field name="name" />
                     <field name="invoiced" />
                     <field name="partner_id" />
-                    <field name="project_ref_id" />
-                    <field name="sale_order_id" />
+                    <field name="project_ref_id" widget="many2one_clickable" />
+                    <field name="sale_order_id" widget="many2one_clickable" />
                     <field name="sale_order_state" />
                     <field name="invoice_amount" sum="Amount"/>
                     <field name="invoice_date" />
+                    <field name="invoice_id" widget="many2one_clickable" />
                     <button string="Ignora" name="markinvoiced" type="object"
                             attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}" />
                     <button string="Invoice" name="invoice" type="object" class="oe_highlight" attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}"

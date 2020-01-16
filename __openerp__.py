@@ -23,7 +23,8 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base_cogitoweb', 'account', 'sale_service', 'product', 'hr_contract', 'account_analytic_analysis',
-                'analytic_user_function', 'account_analytic_default', 'account_type_cogitoweb'],
+                'analytic_user_function', 'account_analytic_default', 'account_type_cogitoweb',
+                'web_tree_many2one_clickable'],
 
     # always loaded
     'data': [
