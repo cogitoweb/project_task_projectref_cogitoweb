@@ -72,7 +72,8 @@ class Order(models.Model):
                 if amount_total != invoice_total:
 
                     raise Warning(
-                        _('Total amount of order is different from the billing plan total amount')
+                        _('Total amount of order (%s) is different from the billing plan total amount (%s)') %
+                        (amount_total, invoice_total)
                     )
 
         return res
