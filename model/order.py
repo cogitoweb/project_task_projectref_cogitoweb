@@ -64,17 +64,17 @@ class Order(models.Model):
 
             if order.custom_invoicing_plan:
 
-                amount_total = round(order.amount_total, 2)
+                amount_untaxed = round(order.amount_untaxed, 2)
                 invoice_total = round(
                     sum(line.invoice_amount for line in order.task_to_invoice_ids),
                     2
                 )
 
-                if amount_total != invoice_total:
+                if amount_untaxed != invoice_total:
 
                     raise Warning(
                         _('Total amount of order (%s) is different from the billing plan total amount (%s)') %
-                        (amount_total, invoice_total)
+                        (amount_untaxed, invoice_total)
                     )
 
         return res
