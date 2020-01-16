@@ -86,7 +86,7 @@
                 
                         <field name="fixed_price" />
                         <field name="tasks_count" />
-                        <field name="project_id" />
+                        <field name="invoice_description" />
                     
                 </xpath>
                 

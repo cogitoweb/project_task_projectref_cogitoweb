@@ -12,10 +12,17 @@ class OrderLine(models.Model):
 
     _inherit = 'sale.order.line'
 
-    project_id = fields.Many2one('project.project', string="Related Project")
     fixed_price = fields.Boolean(default=False)
-    tasks_ids = fields.One2many('project.task', 'direct_sale_line_id', string="Related Tasks")
-    tasks_count = fields.Integer(compute="compute_tasks_ids", string="Tasks")
+    tasks_ids = fields.One2many(
+        'project.task', 'direct_sale_line_id', string="Related Tasks"
+    )
+    tasks_count = fields.Integer(
+        compute="compute_tasks_ids", string="Tasks"
+    )
+    invoice_description = fields.Text(
+        string='Invoice Description',
+    )
+    
 
     @api.depends('tasks_ids')
     def compute_tasks_ids(self):
