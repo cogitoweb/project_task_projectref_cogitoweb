@@ -107,7 +107,7 @@ class Task(models.Model):
         ####        
     """
     points = fields.Integer(string='Points')
-    project_ref_id = fields.Many2one('project.project', 'Project reference')
+    project_ref_id = fields.Many2one('project.project', 'Project reference', index=True)
     an_acc_by_prj = fields.Many2one('account.analytic.account',
                                     string="Contract/Analytic",
                                     related='project_id.analytic_account_id',
@@ -127,19 +127,20 @@ class Task(models.Model):
     effective_cost = fields.Float(required=True, default=0, readonly=True, store=True)
     ms_project_data = fields.Text()
 
-    direct_sale_line_id = fields.Many2one('sale.order.line')
-    product_id = fields.Many2one('product.product')
-    sale_order_id = fields.Many2one('sale.order')
+    direct_sale_line_id = fields.Many2one('sale.order.line', index=True)
+    product_id = fields.Many2one('product.product', index=True)
+    sale_order_id = fields.Many2one('sale.order', index=True)
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
     billing_plan = fields.Boolean(defaut=False)
     can_be_invoiced = fields.Boolean(compute=compute_can_be_invoiced)
-    invoiced = fields.Boolean(defaut=False)
-    invoice_date = fields.Date()
+    invoiced = fields.Boolean(defaut=False, index=True)
+    invoice_date = fields.Date(index=True)
     invoice_amount = fields.Float()
 
     invoice_id = fields.Many2one(
-        'account.invoice'
+        'account.invoice',
+        index=True
     )
 
     @api.multi
