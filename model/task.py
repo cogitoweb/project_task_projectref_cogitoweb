@@ -261,6 +261,7 @@ class Task(models.Model):
             ## rif al progetto
             values['project_id'] = internal_analytic_account_administration.project_id.id
             values['project_ref_id'] = order.real_project_id.id
+            values['partner_id'] = order.real_project_id.partner_id.id
 
         return values
 

@@ -75,7 +75,7 @@
                             <field name="invoice_date" readonly="True" />
                             <field name="invoice_amount" readonly="True" />
                         </group>
-                    </group>
+                    </>
 
                 </page>
             </xpath>
@@ -119,10 +119,20 @@
 
             <search>
                 <field name="invoice_date" />
+                <field name="sale_order_id" />
+                <field name="partner_id" />
+                <field name="project_ref_id" />
 
                 <filter name="to_invoice" string="Da Fatturare" domain="[('stage_id','=',(5002)),('sale_order_state', '=', 'manual'),('invoiced','=',False)]"/>
                 <separator/>
                 <filter name="invoiced" string="Fatturato" domain="[('invoiced','=',True)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Invoice date" name="invoice_date"  context="{'group_by':'invoice_date'}"/>
+                    <filter string="Partner" name="partner_id"  context="{'group_by':'partner_id'}"/>
+                    <filter string="Project" name="project_ref_id"  context="{'group_by':'project_ref_id'}"/>
+                    <filter string="Sale Order" name="sale_order_id"  context="{'group_by':'sale_order_id'}"/>
+                </group>
             </search>
 
     	</field>
@@ -135,6 +145,9 @@
                 <tree default_order="date_deadline asc">
                     <field name="name" />
                     <field name="invoiced" />
+                    <field name="partner_id" />
+                    <field name="project_ref_id" />
+                    <field name="sale_order_id" />
                     <field name="sale_order_state" />
                     <field name="invoice_amount" sum="Amount"/>
                     <field name="invoice_date" />
