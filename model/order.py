@@ -5,6 +5,7 @@ import pprint
 import logging
 
 from openerp import models, fields, api, exceptions, tools
+from openerp.exceptions import Warning
 _logger = logging.getLogger(__name__)
 
 class Order(models.Model):
@@ -55,6 +56,23 @@ class Order(models.Model):
                                                   )
 
         res = super(Order, self).write(values)
+
+        # check totali piano fatturazione
+        for order in self:
+
+            if order.custom_invoicing_plan:
+
+                amount_total = round(order.amount_total, 2)
+                invoice_total = round(
+                    sum(line.invoice_amount for line in order.task_to_invoice_ids)
+                )
+
+                if amount_total != invoice_total:
+
+                    raise Warning(
+                        _('Total amount of order is different from the billing plan total amount')
+                    )
+
         return res
 
     @api.one

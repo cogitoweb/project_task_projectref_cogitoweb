@@ -30,25 +30,6 @@ class Task(models.Model):
             t.can_be_invoiced = (t.sale_order_state == 'manual' and
                                  (t.invoiced == True or not t.stage_id or t.stage_id.id not in [self._stage_id_fatturazione]))
 
-    @api.depends('milestone', 'project_id', 'project_ref_id')
-    def compute_billing_project(self):
-        """ ricava il progetto di riferimento per la fatturazione """
-        for task in self:
-            if task.milestone:
-                task.billing_project = task.project_id
-            else:
-                task.billing_project = task.project_ref_id
-
-    def search_billing_project(self, operator, value):
-        """ search_billing_project """
-        if operator == 'like':
-            operator = 'ilike'
-        return [
-            '|',
-            ('project_ref_id.name', operator, value),
-            ('project_id.name', operator, value)
-            ]
-
     @api.depends('planned_hours', 'user_id')
     def compute_cost(self):
         """ ricava il costo orario dal contratto  """
@@ -152,12 +133,8 @@ class Task(models.Model):
     sale_order_state = fields.Selection(related='sale_order_id.state')
 
     billing_plan = fields.Boolean(defaut=False)
-    billing_project = fields.Many2one('project.project',
-                                      compute=compute_billing_project,
-                                      search=search_billing_project)
     can_be_invoiced = fields.Boolean(compute=compute_can_be_invoiced)
     invoiced = fields.Boolean(defaut=False)
-    milestone = fields.Boolean(defaut=False)
     invoice_date = fields.Date()
     invoice_amount = fields.Float()
 
@@ -269,8 +246,7 @@ class Task(models.Model):
                 values['name'] = 'Fatturazione del %s' % values['invoice_date'].strftime("%d/%m/%Y")
 
             ## stato da fatturare (5002)
-            ## se milestone altrimenti specifica (2)
-            values['stage_id'] = self._stage_id_specifica if values['milestone'] else self._stage_id_fatturazione
+            values['stage_id'] = self._stage_id_fatturazione
 
             values['date_start'] = values['invoice_date']
             values['date_end'] = values['invoice_date']
@@ -282,13 +258,9 @@ class Task(models.Model):
             values['user_id'] = internal_analytic_account_administration.manager_id.id
             values['reviewer_id'] = internal_analytic_account_administration.manager_id.id
 
-            ## se milestone tutti i rif sono al progetto
-            if(values['milestone']):
-                values['project_id'] = order.real_project_id.id
-                values['project_ref_id'] = internal_analytic_account_administration.project_id.id
-            else:
-                values['project_id'] = internal_analytic_account_administration.project_id.id
-                values['project_ref_id'] = order.real_project_id.id
+            ## rif al progetto
+            values['project_id'] = internal_analytic_account_administration.project_id.id
+            values['project_ref_id'] = order.real_project_id.id
 
         return values
 

@@ -37,8 +37,7 @@
                                 
                             <tree editable="bottom" default_order="invoice_date asc">
                                 <field name="invoice_date" required="True" attrs="{'readonly': [('invoiced','=',True)]}" />
-                                <field name="invoice_amount" attrs="{'readonly': [('invoiced','=',True)]}" />
-                                <field name="milestone" attrs="{'readonly': [('invoiced','=',True)]}" />
+                                <field name="invoice_amount" attrs="{'readonly': [('invoiced','=',True)]}" sum="Total amount" />
                                 <field name="invoiced" readonly="True"/>
                                 <button name="ptr_call_repetition_wizard" type="object" string="RP" 
                                         attrs="{'invisible': ['|', ('create_date', '=', False), ('invoiced','=',True)]}"/>

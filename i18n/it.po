@@ -97,11 +97,6 @@ msgid "Billing plan"
 msgstr "Piano di fatturazione"
 
 #. module: project_task_projectref_cogitoweb
-#: field:project.task,billing_project:0
-msgid "Billing project"
-msgstr "Progetto di fatturazione"
-
-#. module: project_task_projectref_cogitoweb
 #: model:ir.model,name:project_task_projectref_cogitoweb.model_crossovered_budget_lines
 msgid "Budget Line"
 msgstr "Riga del budget"
@@ -271,11 +266,6 @@ msgstr "Line id"
 #: help:project.task,an_acc_by_prj_ref:0
 msgid "Link this project to an analytic account if you need financial management on projects. It enables you to connect projects with budgets, planning, cost and revenue analysis, timesheets on projects, etc."
 msgstr "Link this project to an analytic account if you need financial management on projects. It enables you to connect projects with budgets, planning, cost and revenue analysis, timesheets on projects, etc."
-
-#. module: project_task_projectref_cogitoweb
-#: field:project.task,milestone:0
-msgid "Milestone"
-msgstr "Milestone"
 
 #. module: project_task_projectref_cogitoweb
 #: field:project.task,ms_project_data:0

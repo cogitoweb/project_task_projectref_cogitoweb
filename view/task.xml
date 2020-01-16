@@ -66,7 +66,6 @@
                     </group>
                     <group>
                         <group>
-                            <field name="milestone" />
                             <field name="invoiced" />
                             <field name="can_be_invoiced" invisible="True" />
                             <field name="invoice_id" readonly="True" />
@@ -119,9 +118,7 @@
          <field name="arch" type="xml">
 
             <search>
-                <field name="billing_project" />
                 <field name="invoice_date" />
-
 
                 <filter name="to_invoice" string="Da Fatturare" domain="[('stage_id','=',(5002)),('sale_order_state', '=', 'manual'),('invoiced','=',False)]"/>
                 <separator/>
@@ -136,9 +133,7 @@
             <field name="model">project.task</field>
             <field name="arch" type="xml">
                 <tree default_order="date_deadline asc">
-                    <field name="billing_project" />
                     <field name="name" />
-                    <field name="milestone" />
                     <field name="invoiced" />
                     <field name="sale_order_state" />
                     <field name="invoice_amount" sum="Amount"/>
