@@ -75,7 +75,7 @@
                             <field name="invoice_date" readonly="True" />
                             <field name="invoice_amount" readonly="True" />
                         </group>
-                    </>
+                    </group>
 
                 </page>
             </xpath>
