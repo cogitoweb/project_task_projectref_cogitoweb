@@ -4,9 +4,11 @@
 import pprint
 import logging
 
-from openerp import models, fields, api, exceptions, tools
+from openerp import models, fields, api, exceptions, tools, _
 from openerp.exceptions import Warning
+
 _logger = logging.getLogger(__name__)
+
 
 class Order(models.Model):
     """ override sale order """
