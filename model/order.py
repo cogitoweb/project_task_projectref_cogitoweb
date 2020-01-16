@@ -66,7 +66,8 @@ class Order(models.Model):
 
                 amount_total = round(order.amount_total, 2)
                 invoice_total = round(
-                    sum(line.invoice_amount for line in order.task_to_invoice_ids)
+                    sum(line.invoice_amount for line in order.task_to_invoice_ids),
+                    2
                 )
 
                 if amount_total != invoice_total:
