@@ -386,9 +386,21 @@ class Task(models.Model):
                 # in base alla distribuzione in offerta
                 # prezzo_tot : prezzo_riga = prezzo_task : x
                 prop_price = (actual_line.price_unit * total_price_to_invoice) / total_offer_price
+                _logger.info(
+                    """-------
+                    total offer amount = %s
+                    partial task amount = %s
+                    full line price = %s
+                    partial line price = %s
+                    """
+                )
 
                 # il prezzo è il minimo tra il calcolato e il residuo
                 final_price = min(line[1], prop_price)
+                _logger.info("line final_price = %s (as min of %s and %s)" % (
+                        final_price, line[1], prop_price
+                    )
+                )
 
                 invoice_line_from_offer = self.env['account.invoice.line'].create(
                     {
