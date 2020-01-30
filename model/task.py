@@ -6,6 +6,7 @@ import logging
 from dateutil import parser
 import re
 from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 
 from openerp.tools.translate import _
 from openerp import models, fields, api, exceptions, tools
@@ -434,9 +435,9 @@ class Task(models.Model):
                     if "month" in date_ref:
                         if operator and addendum:
                             if operator == "+":
-                                new_date += timedelta(months=addendum)
+                                new_date += relativedelta(months=addendum)
                             else:
-                                new_date -= timedelta(months=addendum)
+                                new_date -= relativedelta(months=addendum)
 
                         months = [
                             "gennaio", "febbraio", "marzo", "aprile",
@@ -444,13 +445,13 @@ class Task(models.Model):
                             "settembre", "ottobre", "novembre", "dicembre",
                         ]
                         
-                        replace_string = months[int(new_date.strftime('%m'))]
+                        replace_string = months[int(new_date.strftime('%m'))-1]
                     else:
                         if operator and addendum:
                             if operator == "+":
-                                new_date += timedelta(days=addendum)
+                                new_date += relativedelta(days=addendum)
                             else:
-                                new_date -= timedelta(days=addendum)
+                                new_date -= relativedelta(days=addendum)
                         
                         replace_string = new_date.strftime('%d/%m/%Y')
 
