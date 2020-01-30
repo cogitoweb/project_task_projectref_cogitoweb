@@ -5,6 +5,7 @@ import pprint
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class Invoice(models.Model):
 
     _inherit = 'account.invoice'

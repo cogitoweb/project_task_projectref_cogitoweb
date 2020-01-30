@@ -326,8 +326,14 @@ class Task(models.Model):
                     _("Task id %s does not have deadline date") % record.id
                 )
 
+            if not record.an_acc_by_prj_ref:
+
+                raise Warning(
+                    _("Missing project ref or account ref in Task id %s") % record.id
+                )
+
             sale_order = record.sale_order_id
-            partner_id = record.project_id.analytic_account_id.partner_id
+            partner_id = sale_order.partner_id
             invoice_count += 1
 
             invoice = self.env['account.invoice'].create(
@@ -344,11 +350,64 @@ class Task(models.Model):
                 }
             )
 
-            # [TODO]
             # add splitted lines
-            #
-            #
-            #
+            line_to_invoce = []
+
+            # search not invoiced lines
+            for line in sale_order.order_line:
+
+                line_amount_to_invoice = line.amount_to_invoice
+                # append line with remaining amount
+                if line_amount_to_invoice > 0:
+                    line_to_invoce.append(
+                        (line.id, line_amount_to_invoice)
+                    )
+            
+            # get total of current invoice
+            total_price_to_invoice = record.price
+            # get total of whole offer
+            total_offer_price = sale_order.amount_untaxed
+
+            for line in line_to_invoce:
+
+                actual_line = sale_order.order_line.filtered(
+                    lambda x: x.id == line[0]
+                )
+
+                taxes = []
+                for t in actual_line.product_id.taxes_id:
+                    taxes.append((4, t.id))
+                
+                # [TODO] placeholder per date
+                line_descr = record.invoice_description if record.invoice_description else record.name
+
+                # [TODO]
+                prop_price = 0
+
+                # [TODO]
+                # includi arrotondamenti se questo è l'ultimo task
+                # del piano di fattturazione
+
+                # il prezzo è il minimo tra il calcolato e il residuo
+                final_price = min(line[1], prop_price)
+
+                invoice_line_from_offer = self.env['account.invoice.line'].create(
+                    {
+                        'product_id': actual_line.product_id.id,
+                        'account_id': actual_line.product_id.property_account_income.id if \
+                            actual_line.product_id.property_account_income else PRODUCT_ACCOUNT_ID,
+                        'invoice_id': invoice.id,
+                        'uos_id': actual_line.product_id.uom_id.id,
+                        'invoice_line_tax_id': taxes,
+                        'price_unit': final_price,
+                        'quantity': 1,
+                        'name': line_descr,
+                        'account_analytic_id': record.an_acc_by_prj_ref.id
+                    }
+                )
+
+            # end
+
 
         return {
             'type': 'ir.actions.act_window.message',

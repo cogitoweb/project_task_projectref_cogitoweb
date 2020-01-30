@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import invoice
+import invoice_line
 import issue
 import task
 import project
