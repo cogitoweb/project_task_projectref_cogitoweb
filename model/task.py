@@ -158,7 +158,7 @@ class Task(models.Model):
         self.stage_id = self._stage_id_fatturazione
 
     @api.multi
-    def invoice(self):
+    def manual_invoice(self):
 
         self.ensure_one()
         self.invoiced = True
@@ -293,3 +293,65 @@ class Task(models.Model):
             out['date_start'] = date_start
 
         return {'value': out}
+
+    #
+    # FATTURAZIONE
+    #
+    @api.multi
+    def invoice_task(self):
+
+        # costanti
+        ACCOUNT_ID = 33
+        PRODUCT_ACCOUNT_ID = 5342
+        JOURNAL_ID = 1
+
+        # counters
+        invoice_count = 0
+
+        # start check
+        for record in self:
+
+            # check sale_order_id
+            if not record.sale_order_id:
+
+                raise Warning(
+                    _("Task id %s does not have sale order") % record.id
+                )
+
+            if not record.date_deadline:
+
+                raise Warning(
+                    _("Task id %s does not have deadline date") % record.id
+                )
+
+            sale_order = record.sale_order_id
+            partner_id = record.project_id.analytic_account_id.partner_id
+            invoice_count += 1
+
+            invoice = self.env['account.invoice'].create(
+                {
+                    'partner_id': partner_id.id,
+                    'account_id': partner_id.property_account_receivable.id if \
+                        partner_id.property_account_receivable else ACCOUNT_ID,
+                    'journal_id': JOURNAL_ID,
+                    'fiscal_position': partner_id.property_account_position.id if \
+                        partner_id.property_account_position else False,
+                    'order_reference_id': sale_order.id,
+                    'origin': sale_order.name
+                }
+            )
+
+            # [TODO]
+            # add splitted lines
+            #
+            #
+            #
+
+        return {
+            'type': 'ir.actions.act_window.message',
+            'title': _('Billing tasks invoicing'),
+            'message': _(
+                "Invoicing procedure completed:\n\n"
+                "Generated %s invoices\n\n"
+            ) % (invoice_count),
+        }

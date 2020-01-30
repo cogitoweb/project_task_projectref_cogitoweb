@@ -156,7 +156,7 @@
                     <field name="invoice_id" widget="many2one_clickable" />
                     <button string="Ignora" name="markinvoiced" type="object"
                             attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}" />
-                    <button string="Invoice" name="invoice" type="object" class="oe_highlight" attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}"
+                    <button string="Invoice" name="manual_invoice" type="object" class="oe_highlight" attrs="{'invisible':['|', ('sale_order_state','not in',['manual']), ('invoiced', '=', True)]}"
                             context="{'default_advance_payment_method':'fixed','default_amount':invoice_amount}" />
                 </tree>
             </field>
@@ -178,6 +178,27 @@
 
     <menuitem id="task_to_invoice" name="Fatturazione" parent="account.menu_finance_receivables" sequence="100"
                   action="task_to_invoce_action" />
+
+
+    <!-- invoicing -->
+
+    <record id="invoice_billing_task_multi_action" model="ir.actions.server">
+        <field name="name">Invoice</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = env['project.task'].browse(context.get('active_ids', [])).invoice_task()
+        </field>
+    </record>
+
+    <record id="invoice_billing_task_multi_menu" model="ir.values">
+        <field name="name">Invoice</field>
+        <field name="model">project.task</field>
+        <field name="key">action</field>
+        <field name="key2">client_action_multi</field>
+        <field name="value" eval="'ir.actions.server,%d' % invoice_billing_task_multi_action" />
+        <field name="groups_id" eval="[(4,ref('account.group_account_invoice'))]"/>
+    </record>
 
    </data>
 </openerp>
