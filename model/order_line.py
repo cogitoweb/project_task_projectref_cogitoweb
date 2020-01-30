@@ -35,7 +35,7 @@ class OrderLine(models.Model):
     )
 
     @api.depends('invoice_line_ids')
-    def amount_to_invoice(self):
+    def compute_invoice_lines(self):
         """ compute amout to invoice """
 
         for line in self:
