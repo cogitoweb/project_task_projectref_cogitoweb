@@ -458,7 +458,7 @@ class Task(models.Model):
                     _logger.info("replace %s with %s" % (match, replace_string))
                 # end replace
 
-                _logger.info("line descr is: %s" %s)
+                _logger.info("line descr is: %s" % line_descr)
 
                 # calcolo la proporzione di split del prezzo
                 # in base alla distribuzione in offerta
