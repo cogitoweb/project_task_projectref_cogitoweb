@@ -379,7 +379,8 @@ class Task(models.Model):
                     taxes.append((4, t.id))
                 
                 # [TODO] placeholder per date
-                line_descr = record.invoice_description if record.invoice_description else record.name
+                line_descr = invoice_description.invoice_description if \
+                   invoice_description.invoice_description else invoice_description.name
 
                 # [TODO]
                 prop_price = 0
