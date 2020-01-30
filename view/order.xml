@@ -82,6 +82,15 @@
                             </field>
                         </div>
                 </xpath>
+
+                <xpath expr="//field[@name='order_line']/form/field[@name='name']" position="after">
+                    <br /><br />
+                    
+                    <label for="invoice_description"/>
+                    <field name="invoice_description"/>
+
+                    <br /><br />
+                </xpath>
                 
                 <xpath expr="//tree[@string='Sales Order Lines']/field[@name='tax_id']" position="before">
                 

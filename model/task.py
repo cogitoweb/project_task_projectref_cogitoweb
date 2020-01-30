@@ -417,12 +417,62 @@ class Task(models.Model):
                 matches = re.findall('#\(#deadline_(.*?)#\)#', line_descr, re.DOTALL)
                 _logger.info("search for dates to replace")
                 for match in matches:
-                    _logger.info(match)
+
+                    date_ref = match
+                    replace_string = ""
+                    operator = False
+                    addendum = False
+                    if "+" in match or "-" in match:
+
+                        operator = "+" if "+" in match else "-"
+                        parts = match.split(operator)
+
+                        date_ref = parts[0]
+                        addendum = int(parts[1]) if len(parts) > 0 else 0
+                    
+                    new_date = parser.parse(record.date_deadline) 
+                    if "month" in date_ref:
+                        if operator and addendum:
+                            if operator == "+":
+                                new_date += relativedelta(months=addendum)
+                            else:
+                                new_date -= relativedelta(months=addendum)
+
+                        months = [
+                            "gennaio",
+                            "febbraio",
+                            "marzo",
+                            "aprile",
+                            "maggio",
+                            "giugno",
+                            "luglio",
+                            "agosto",
+                            "settembre",
+                            "ottobre",
+                            "novembre",
+                            "dicembre",
+                        ]
+                        
+                        replace_string = months[int(new_date.strftime('%m'))]
+                    else:
+                        if operator and addendum:
+                            if operator == "+":
+                                new_date += relativedelta(days=addendum)
+                            else:
+                                new_date -= relativedelta(days=addendum)
+                        
+                        replace_string = new_date.strftime('%d/%m/%Y')
+
+                    line_descr = line_descr.replace("#(#deadline_%s#)#" % match, replace_string)
+                    _logger.info("replace %s with %s" % (match, replace_string))
+                # end replace
+
+                _logger.info("line descr is: %s" %s)
 
                 # calcolo la proporzione di split del prezzo
                 # in base alla distribuzione in offerta
                 # prezzo_tot : prezzo_riga = prezzo_task : x
-                line_price = actual_line.price_unit * actual_line.prduct_uom_qty
+                line_price = actual_line.price_unit * actual_line.product_uom_qty
                 prop_price = (line_price * total_price_to_invoice) / total_offer_price
                 _logger.info(
                     """-------
@@ -434,7 +484,7 @@ class Task(models.Model):
                     """ % (
                         total_offer_price,
                         total_price_to_invoice,
-                        actual_line.price_unit, actual_line.prduct_uom_qty,
+                        actual_line.price_unit, actual_line.product_uom_qty,
                         line_price,
                         prop_price
                     )
