@@ -434,32 +434,23 @@ class Task(models.Model):
                     if "month" in date_ref:
                         if operator and addendum:
                             if operator == "+":
-                                new_date += relativedelta(months=addendum)
+                                new_date += timedelta(months=addendum)
                             else:
-                                new_date -= relativedelta(months=addendum)
+                                new_date -= timedelta(months=addendum)
 
                         months = [
-                            "gennaio",
-                            "febbraio",
-                            "marzo",
-                            "aprile",
-                            "maggio",
-                            "giugno",
-                            "luglio",
-                            "agosto",
-                            "settembre",
-                            "ottobre",
-                            "novembre",
-                            "dicembre",
+                            "gennaio", "febbraio", "marzo", "aprile",
+                            "maggio", "giugno", "luglio", "agosto",
+                            "settembre", "ottobre", "novembre", "dicembre",
                         ]
                         
                         replace_string = months[int(new_date.strftime('%m'))]
                     else:
                         if operator and addendum:
                             if operator == "+":
-                                new_date += relativedelta(days=addendum)
+                                new_date += timedelta(days=addendum)
                             else:
-                                new_date -= relativedelta(days=addendum)
+                                new_date -= timedelta(days=addendum)
                         
                         replace_string = new_date.strftime('%d/%m/%Y')
 
