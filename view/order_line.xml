@@ -7,8 +7,6 @@
             <field name="name">sale.order.line.form. custom descr for billing</field>
             <field name="model">sale.order.line</field>
             <field name="arch" type="xml">
-                <data>
-
                     <form>
                         <group>
                             <field name="product_id" readonly="1" />
@@ -16,8 +14,6 @@
                             <field name="invoice_description"/>
                         </group>
                     </form>
-                   
-                </data>
            </field>
         </record>
 
