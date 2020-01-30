@@ -528,7 +528,7 @@ class Task(models.Model):
                 # conto il già fatturato
                 total_invoiced = sum(self.env['account.invoice'].search(
                     [
-                        ('sale_order_id', '=', sale_order.id),
+                        ('order_reference_id', '=', sale_order.id),
                     ]
                 ).mapped('amount_untaxed'))
 
