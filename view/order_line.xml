@@ -24,6 +24,7 @@
                 <field name="view_mode">form</field>
                 <field name="view_id" ref="view_order_form_billing_description"/>
                 <field name="target">new</field>
+                <field name="flags">{'form': {'action_buttons': 1}}</field>
         </record>
 
         <!--  sale order inherited form -->

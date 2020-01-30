@@ -95,10 +95,12 @@
                 
                 <xpath expr="//tree[@string='Sales Order Lines']/field[@name='tax_id']" position="before">
                 
+                        <field name="id" invisible="1" />
                         <field name="fixed_price" />
                         <field name="tasks_count" />
                         <field name="invoice_description" />
-                        <button name="%(action_edit_order_line_description)d" type='action' string='Edit billing descr' />
+                        <button name="%(action_edit_order_line_description)d"
+                            type='action' string='edit' context="{'active_id':id}" />
                     
                 </xpath>
                 
