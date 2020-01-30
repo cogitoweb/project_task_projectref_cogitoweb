@@ -21,6 +21,14 @@ class OrderLine(models.Model):
     )
     invoice_description = fields.Text(
         string='Invoice Description',
+        help="""Custom description can be used to describe product in invoice line
+            (when using billing plan invoice procedure)
+            You can insert the following espression based on billing plan invoicing date:
+            * ###deadline_date### prints date in format gg/mm/aaaa
+            * ###deadline_date +(-) n###  add or removes days and prints date in format gg/mm/aaaa
+            * ###deadline_month### print month in longetxt italian format
+            * ###deadline_month +(-) n### add or removes months and print month in longetxt italian format
+        """
     )
     invoice_line_ids = fields.One2many(
         'account.invoice.line',

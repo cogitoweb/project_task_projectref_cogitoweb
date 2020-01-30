@@ -405,24 +405,32 @@ class Task(models.Model):
                 for t in actual_line.product_id.taxes_id:
                     taxes.append((4, t.id))
                 
-                # [TODO] placeholder per date
+                # placeholder per date
                 line_descr = actual_line.invoice_description if \
                    actual_line.invoice_description else actual_line.name
+                # You can insert the following espression based on billing plan invoicing date:
+                #   * ###deadline_date### prints date in format gg/mm/aaaa
+                #   * ###deadline_date +(-) n###  add or removes days and prints date in format gg/mm/aaaa
+                #   * ###deadline_month### print month in longetxt italian format
+                #   * ###deadline_month +(-) n### add or removes months and print month in longetxt italian format
 
                 # calcolo la proporzione di split del prezzo
                 # in base alla distribuzione in offerta
                 # prezzo_tot : prezzo_riga = prezzo_task : x
-                prop_price = (actual_line.price_unit * total_price_to_invoice) / total_offer_price
+                line_price = actual_line.price_unit * actual_line.prduct_uom_qty
+                prop_price = (line_price * total_price_to_invoice) / total_offer_price
                 _logger.info(
                     """-------
                     total offer amount = %s
                     partial task amount = %s
+                    line price = %s * quantity %s
                     full line price = %s
                     partial line price = %s
                     """ % (
                         total_offer_price,
                         total_price_to_invoice,
-                        actual_line.price_unit,
+                        actual_line.price_unit, actual_line.prduct_uom_qty,
+                        line_price,
                         prop_price
                     )
                 )
@@ -443,7 +451,7 @@ class Task(models.Model):
                         'uos_id': actual_line.product_id.uom_id.id,
                         'invoice_line_tax_id': taxes,
                         'price_unit': final_price,
-                        'quantity': 1,
+                        'quantity': 1, # fixed to ONE
                         'name': line_descr,
                         'account_analytic_id': record.an_acc_by_prj_ref.id
                     }
@@ -456,6 +464,9 @@ class Task(models.Model):
             # a causa delle divisioni
             if invoice.amount_untaxed < total_price_to_invoice:
                 invoice.invoice_line[-1].price_unit += total_price_to_invoice - invoice.amount_untaxed
+                _logger.info(
+                    "raise price of last line to %s" % invoice.invoice_line[-1].price_unit
+                )
 
             # includi arrotondamenti se questo è l'ultimo task
             # del piano di fattturazione
@@ -479,6 +490,11 @@ class Task(models.Model):
                 # l'ultima riga
                 if total_invoiced < total_offer_price:
                     invoice.invoice_line[-1].price_unit += total_offer_price - total_invoiced
+
+                    _logger.info(
+                        "final adjust to of last line to %s" % invoice.invoice_line[-1].price_unit
+                    )
+            # end if
 
             # register link
             record.invoice_id = invoice
