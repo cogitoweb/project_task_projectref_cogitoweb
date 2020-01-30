@@ -23,4 +23,28 @@ class Invoice(models.Model):
     def _get_inverse_related_order(self):
         pass
 
-    order_reference_id = fields.Many2one('sale.order', 'Order reference', compute=_get_related_order, inverse=_get_inverse_related_order, readonly=True, store=False) 
+    # Fields
+
+    order_reference_id = fields.Many2one(
+        'sale.order', 'Order reference', compute=_get_related_order,
+        inverse=_get_inverse_related_order, readonly=True, store=False
+    )
+
+    # override to manage related tasks
+    # of billing plans
+    @api.multi
+    def unlink(self):
+        
+        for record in self:
+            task_to_reset = self.env['project.task'].sudo().search(
+                [
+                    ('billing_plan', '=', True),
+                    ('invoice_id', '=', record.id),
+                    ('invoiced', '=', True),
+                ]
+            )
+
+            task_to_reset.marktoinvoice()
+        # end for
+    
+        return super(Invoice, self).unlink()

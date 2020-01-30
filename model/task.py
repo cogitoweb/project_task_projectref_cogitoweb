@@ -145,19 +145,28 @@ class Task(models.Model):
         index=True
     )
 
+    # used in interface && invoice procedure
     @api.multi
     def markinvoiced(self):
 
-        self.ensure_one()  
-        self.invoiced = True
-        self.stage_id = self._stage_id_done
+        self.write(
+            {
+                'invoiced': True,
+                'stage_id': self._stage_id_done
+            }
+        )
 
+    # used in invoice unlink() && interface
     @api.multi
     def marktoinvoice(self):
 
-        self.ensure_one()  
-        self.invoiced = False
-        self.stage_id = self._stage_id_fatturazione
+        self.write(
+            {
+                'invoiced': False,
+                'stage_id': self._stage_id_fatturazione,
+                'invoice_id': False
+            }
+        )
 
     @api.multi
     def manual_invoice(self):
@@ -314,10 +323,22 @@ class Task(models.Model):
         for record in self:
 
             # check sale_order_id
+            if not record.billing_plan:
+
+                raise Warning(
+                    _("Task id %s is not part of a billing plan") % record.id
+                )
+
             if not record.sale_order_id:
 
                 raise Warning(
                     _("Task id %s does not have sale order") % record.id
+                )
+
+            if record.invoiced:
+
+                raise Warning(
+                    _("Task id %s seems to be already invoiced (or maybe forced...)") % record.id
                 )
 
             if not record.invoice_amount:
@@ -461,6 +482,7 @@ class Task(models.Model):
 
             # register link
             record.invoice_id = invoice
+            record.markinvoiced()
             # end of invoice
 
         return {
