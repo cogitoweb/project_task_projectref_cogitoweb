@@ -382,12 +382,10 @@ class Task(models.Model):
                 line_descr = actual_line.invoice_description if \
                    actual_line.invoice_description else actual_line.name
 
-                # [TODO]
-                prop_price = 0
-
-                # [TODO]
-                # includi arrotondamenti se questo è l'ultimo task
-                # del piano di fattturazione
+                # calcolo la proporzione di split del prezzo
+                # in base alla distribuzione in offerta
+                # prezzo_tot : prezzo_riga = prezzo_task : x
+                prop_price = (actual_line.price_unit * total_price_to_invoice) / total_offer_price
 
                 # il prezzo è il minimo tra il calcolato e il residuo
                 final_price = min(line[1], prop_price)
@@ -406,9 +404,41 @@ class Task(models.Model):
                         'account_analytic_id': record.an_acc_by_prj_ref.id
                     }
                 )
+            # end of lines
 
-            # end
+            # includi arrotondamenti
+            # sull'ultima riga
+            # se mancano centesimi
+            # a causa delle divisioni
+            if invoice.amount_untaxed < total_price_to_invoice:
+                invoice.invoice_line[-1].price_unit += total_price_to_invoice - invoice.amount_untaxed
 
+            # includi arrotondamenti se questo è l'ultimo task
+            # del piano di fattturazione
+            check_tasks_to_invoice = self.search(
+                [
+                    ('id', '!=', record.id),
+                    ('sale_order_id', '=', sale_order.id),
+                    ('invoice_id', '=', False)
+                ]
+            )
+            # non ci sono altri task da fatturare
+            if not check_tasks_to_invoice:
+                # conto il già fatturato
+                total_invoiced = sum(self.env['account.invoice'].search(
+                    [
+                        ('sale_order_id', '=', sale_order.id),
+                    ]
+                ).mapped('amount_untaxed'))
+
+                # se differisce da totale offerta incremento
+                # l'ultima riga
+                if total_invoiced < total_offer_price:
+                    invoice.invoice_line[-1].price_unit += total_offer_price - total_invoiced
+
+            # register link
+            record.invoice_id = invoice
+            # end of invoice
 
         return {
             'type': 'ir.actions.act_window.message',
