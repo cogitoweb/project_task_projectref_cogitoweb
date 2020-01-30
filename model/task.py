@@ -320,6 +320,12 @@ class Task(models.Model):
                     _("Task id %s does not have sale order") % record.id
                 )
 
+            if not record.invoice_amount:
+
+                raise Warning(
+                    _("Task id %s has no ivoice amount: what type of billing plan is this? :-)") % record.id
+                )
+
             if not record.date_deadline:
 
                 raise Warning(
@@ -364,7 +370,7 @@ class Task(models.Model):
                     )
             
             # get total of current invoice
-            total_price_to_invoice = record.price
+            total_price_to_invoice = record.invoice_amount
             # get total of whole offer
             total_offer_price = sale_order.amount_untaxed
 
@@ -392,7 +398,12 @@ class Task(models.Model):
                     partial task amount = %s
                     full line price = %s
                     partial line price = %s
-                    """
+                    """ % (
+                        total_offer_price,
+                        total_price_to_invoice,
+                        actual_line.price_unit,
+                        prop_price
+                    )
                 )
 
                 # il prezzo è il minimo tra il calcolato e il residuo
