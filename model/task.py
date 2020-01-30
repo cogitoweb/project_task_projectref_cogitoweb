@@ -6,8 +6,10 @@ import logging
 from dateutil import parser
 from datetime import datetime, date, timedelta
 
+from openerp.tools.translate import _
 from openerp import models, fields, api, exceptions, tools
 _logger = logging.getLogger(__name__)
+
 
 class Task(models.Model):
     """ override task """
@@ -337,7 +339,8 @@ class Task(models.Model):
                     'fiscal_position': partner_id.property_account_position.id if \
                         partner_id.property_account_position else False,
                     'order_reference_id': sale_order.id,
-                    'origin': sale_order.name
+                    'origin': sale_order.name,
+                    'date_invoice': record.date_deadline
                 }
             )
 
