@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--  sale order inherited form -->
+        <record id="view_order_form_inherit3" model="ir.ui.view">
+            <field name="name">sale.order.line.form. custom descr for billing</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_form2"/>
+            <field name="arch" type="xml">
+                <data>
+                   <xpath expr="//field[@name='name']" position="after">
+                        <br /><br />
+                        
+                        <label for="invoice_description"/>
+                        <field name="invoice_description"/>
+
+                        <br /><br />
+                   </xpath>
+                </data>
+           </field>
+        </record>
+
+        
+    </data>
+</openerp>

@@ -38,6 +38,7 @@
         'view/issue.xml',
         'view/invoice.xml',
         'view/order.xml',
+        'view/order_line.xml',
         'view/account.xml',
         'view/account_move.xml',
         'view/account_analytic_line.xml',

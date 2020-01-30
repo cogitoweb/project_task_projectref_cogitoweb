@@ -4,6 +4,7 @@
 import pprint
 import logging
 from dateutil import parser
+import re
 from datetime import datetime, date, timedelta
 
 from openerp.tools.translate import _
@@ -409,10 +410,14 @@ class Task(models.Model):
                 line_descr = actual_line.invoice_description if \
                    actual_line.invoice_description else actual_line.name
                 # You can insert the following espression based on billing plan invoicing date:
-                #   * ###deadline_date### prints date in format gg/mm/aaaa
-                #   * ###deadline_date +(-) n###  add or removes days and prints date in format gg/mm/aaaa
-                #   * ###deadline_month### print month in longetxt italian format
-                #   * ###deadline_month +(-) n### add or removes months and print month in longetxt italian format
+                #   * #(#deadline_date#)# prints date in format gg/mm/aaaa
+                #   * #(#deadline_date +(-) n#)#  add or removes days and prints date in format gg/mm/aaaa
+                #   * #(#deadline_month#)# print month in longetxt italian format
+                #   * #(#deadline_month +(-) n#)# add or removes months and print month in longetxt italian format
+                matches = re.findall('#\(#deadline_(.*?)#\)#', line_descr, re.DOTALL)
+                _logger.info("search for dates to replace")
+                for match in matches:
+                    _logger.info(match)
 
                 # calcolo la proporzione di split del prezzo
                 # in base alla distribuzione in offerta
