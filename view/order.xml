@@ -2,6 +2,7 @@
 <openerp>
     <data>
 
+    
         <!--  sale order inherited form -->
 
         <record id="project_task_projectref_sale_order_form" model="ir.ui.view">
@@ -97,6 +98,7 @@
                         <field name="fixed_price" />
                         <field name="tasks_count" />
                         <field name="invoice_description" />
+                        <button name="%(action_edit_order_line_description)d" type='action' string='Edit billing descr' />
                     
                 </xpath>
                 
