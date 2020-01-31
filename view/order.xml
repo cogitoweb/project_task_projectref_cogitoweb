@@ -99,7 +99,7 @@
                         <field name="fixed_price" />
                         <field name="tasks_count" />
                         <field name="invoice_description" />
-                        <button name="edit_invoice_description" type='button' string='edit' />
+                        <button name="edit_invoice_description" type='object' string='edit' />
                     
                 </xpath>
                 
