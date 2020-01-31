@@ -17,17 +17,6 @@
            </field>
         </record>
 
-        <record id="action_edit_order_line_description" model="ir.actions.act_window">
-                <field name="name">Edit order line invoice description</field>
-                <field name="res_model">sale.order.line</field>
-                <field name="view_type">form</field>
-                <field name="view_mode">form</field>
-                <field name="view_id" ref="view_order_form_billing_description"/>
-                <field name="target">new</field>
-                <field name="context">{'res_id': active_id}</field>
-                <field name="flags">{'form': {'action_buttons': 1}}</field>
-        </record>
-
         <!--  sale order inherited form -->
         <record id="view_order_form_inherit3" model="ir.ui.view">
             <field name="name">sale.order.line.form. custom descr for billing</field>

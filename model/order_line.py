@@ -62,3 +62,22 @@ class OrderLine(models.Model):
         for line in self:
             line.tasks_count = len(line.tasks_ids)
         #end for
+
+    @api.multi
+    def edit_invoice_description(self):
+
+        self.ensure_one()
+
+        return return {
+            'type': 'ir.actions.act_window',
+            'name': 'Edit description for invoice',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_model': 'sale.order.line',
+            'nodestroy': 'true',
+            'res_id': self.id,
+            'views': [(False, 'form')],
+            'view_id': self.env.ref('project_task_projectref_cogitoweb.view_order_form_billing_description').id,
+            'flags': {'form': {'action_buttons': True}},
+            'target': 'new',
+        }

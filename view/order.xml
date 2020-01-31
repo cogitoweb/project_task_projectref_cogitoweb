@@ -99,8 +99,7 @@
                         <field name="fixed_price" />
                         <field name="tasks_count" />
                         <field name="invoice_description" />
-                        <button name="%(action_edit_order_line_description)d"
-                            type='action' string='edit' context="{'active_id':id, 'res_id': id}" />
+                        <button name="edit_invoice_description" type='button' string='edit' />
                     
                 </xpath>
                 
