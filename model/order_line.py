@@ -68,7 +68,7 @@ class OrderLine(models.Model):
 
         self.ensure_one()
 
-        return return {
+        return {
             'type': 'ir.actions.act_window',
             'name': 'Edit description for invoice',
             'view_mode': 'form',
