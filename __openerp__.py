@@ -36,6 +36,7 @@
         'view/product_category.xml',
         'view/product_template.xml',
         'view/issue.xml',
+        'view/hr_contract.xml',
         'view/invoice.xml',
         'view/order_line.xml',
         'view/order.xml',

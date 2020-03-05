@@ -2,6 +2,7 @@
 import invoice
 import invoice_line
 import issue
+import hr_contract
 import task
 import project
 import product_category
