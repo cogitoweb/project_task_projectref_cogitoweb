@@ -307,6 +307,21 @@ class Task(models.Model):
 
         return {'value': out}
 
+
+    #
+    # batch_complete
+    #
+    @api.multi
+    def complete_task(self):
+
+        for record in self:
+
+            record.write(
+                {
+                    'stage_id': _stage_id_done
+                }
+            )
+
     #
     # FATTURAZIONE
     #
