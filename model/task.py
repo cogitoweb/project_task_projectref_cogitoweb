@@ -318,7 +318,7 @@ class Task(models.Model):
 
             record.write(
                 {
-                    'stage_id': _stage_id_done
+                    'stage_id': self._stage_id_done
                 }
             )
 
