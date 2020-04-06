@@ -479,7 +479,7 @@ class Task(models.Model):
                 # calcolo la proporzione di split del prezzo
                 # in base alla distribuzione in offerta
                 # prezzo_tot : prezzo_riga = prezzo_task : x
-                line_price = actual_line.price_unit * actual_line.product_uom_qty
+                line_price = actual_line.price_subtotal
                 prop_price = (line_price * total_price_to_invoice) / total_offer_price
                 _logger.info(
                     """-------
