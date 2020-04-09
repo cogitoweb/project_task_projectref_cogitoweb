@@ -38,9 +38,9 @@
         </field>
       </record>
 
-      <!-- disable view for performance reason -->
+      <!-- disable view for performance reasons -->
       <record id="account_analytic_analysis.view_account_analytic_account_tree_c2c_3" model="ir.ui.view">
-            <field name="active">0</field>
+            <field name="active" eval="False" />
       </record>
 
    </data>
